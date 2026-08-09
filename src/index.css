@@ -2057,10 +2057,10 @@ a:focus-visible {
   position: relative;
   border-radius: 24px;
   overflow: hidden;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-strong);
+  border: 1px solid rgba(214, 178, 111, 0.25);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 30px rgba(214, 178, 111, 0.08);
   aspect-ratio: 3 / 4;
-  background: rgba(255,255,255,0.04);
+  background: radial-gradient(circle at 50% 30%, rgba(214, 178, 111, 0.18) 0%, rgba(24, 24, 27, 0.95) 70%, rgba(9, 9, 11, 1) 100%);
 }
 
 .ov2-photo {
