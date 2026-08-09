@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ExternalLink, Globe, LayoutDashboard, BarChart3, Star, Layers, CheckCircle2, Utensils } from "lucide-react";
+import { ExternalLink, Globe } from "lucide-react";
 
 const osteriaStats = [
   { value: "100%", label: "HCI Usability Compliance" },
@@ -21,7 +21,19 @@ const osteriaFeatures = [
 
 const osteriaTech = ["React.js", "Node.js", "Express", "Supabase", "Tailwind CSS", "Recharts", "HCI Principles"];
 
-const additionalProjects = [
+type ProjectItem = {
+  id: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  description: string;
+  techStack: string[];
+  liveUrl?: string;
+  githubUrl: string;
+  image?: string;
+};
+
+const additionalProjects: ProjectItem[] = [
   {
     id: "osteria-restaurant",
     title: "Osteria Bella Restaurant",
