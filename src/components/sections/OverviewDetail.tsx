@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Brain, Code2, Sparkles, Layers } from "lucide-react";
+import { Brain, Code2, Sparkles, Layers, Download } from "lucide-react";
 
 type OverviewDetailProps = {
   onViewProject?: () => void;
@@ -119,6 +119,15 @@ export default function OverviewDetail({ onViewProject }: OverviewDetailProps) {
               }}
             >
               View Featured Project
+            </a>
+            <a
+              href="/resume.pdf"
+              download="Usman-Shamsi-Resume.pdf"
+              className="ov2-btn-accent"
+              aria-label="Download PDF Resume"
+            >
+              <Download size={16} />
+              Download Resume
             </a>
             <a href="mailto:m.usman.shamsi.pak@gmail.com" className="ov2-btn-secondary">
               Contact Me
