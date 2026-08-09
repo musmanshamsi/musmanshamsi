@@ -24,14 +24,14 @@ export default function AtlasHeader({
 
       <header className={`atlas-header ${announcementBanner.enabled && announcementBanner.text ? "mt-6" : ""}`}>
         <button
-          className="brand flex items-center gap-2"
+          className="brand"
           onClick={() => openSection(0)}
           aria-label="Go to overview"
         >
           <img
             src="/images/profile_image.png"
             alt="Muhammad Usman"
-            className="w-6 h-6 rounded-full object-cover border border-amber-400/50 shadow-sm"
+            className="w-8 h-8 rounded-full object-cover border border-amber-400/50 shadow-sm"
           />
           <span>MU</span>
         </button>
