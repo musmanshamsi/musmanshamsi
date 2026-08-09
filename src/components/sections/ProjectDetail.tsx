@@ -23,22 +23,21 @@ const osteriaTech = ["React.js", "Node.js", "Express", "Supabase", "Tailwind CSS
 
 const additionalProjects = [
   {
-    id: "arbitrage-bot",
-    title: "ArbitrageBot",
-    subtitle: "AI Cryptocurrency Arbitrage Trading System",
-    category: "AI & Automation",
-    image: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&q=80",
+    id: "osteria-restaurant",
+    title: "Osteria Bella Restaurant",
+    subtitle: "Full-Stack Food Ordering & Kitchen System",
+    category: "Full-Stack Web & HCI",
     description:
-      "An AI-powered cryptocurrency arbitrage system built to monitor market data, identify cross-exchange opportunities, and execute sub-second predictive filtering.",
-    techStack: ["Python", "React.js", "TensorFlow", "CCXT", "OpenAI APIs", "MySQL"],
-    githubUrl: "https://github.com/musmanshamsi/ArbitrageBotFYP.git",
+      "A premium food ordering and kitchen management system built with a warm Italian bistro aesthetic adhering to strict HCI standards. Features live kitchen status tracking, BI analytics, menu CRUD, and a customer review rating system.",
+    techStack: ["React", "Node.js", "Express", "Supabase", "Tailwind CSS", "Recharts", "HCI"],
+    liveUrl: "https://osteriarestaurant.vercel.app/",
+    githubUrl: "https://github.com/musmanshamsi/osteriarestaurant",
   },
   {
     id: "portfolio-site",
     title: "Interactive Atlas Portfolio",
     subtitle: "React 19 & TypeScript Web Application",
     category: "Full-Stack Web",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
     description:
       "Modern interactive portfolio built with React 19, TypeScript, and Framer Motion featuring an Atlas stage carousel, dynamic appointment scheduling, and automated email dispatch.",
     techStack: ["React 19", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion"],
@@ -50,7 +49,6 @@ const additionalProjects = [
     title: "AI Vision & Detection Pipeline",
     subtitle: "Computer Vision & Deep Learning System",
     category: "AI & Machine Learning",
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80",
     description:
       "Real-time computer vision pipeline leveraging OpenCV and TensorFlow for automated feature extraction, object tracking, and image classification.",
     techStack: ["Python", "OpenCV", "TensorFlow", "NumPy", "Deep Learning"],
