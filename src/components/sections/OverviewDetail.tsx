@@ -133,7 +133,7 @@ export default function OverviewDetail({ onViewProject }: OverviewDetailProps) {
         >
           <div className="ov2-photo-frame">
             <img
-              src="/images/overview.png"
+              src="/images/profile_image.png"
               alt="Muhammad Usman"
               className="ov2-photo"
             />
