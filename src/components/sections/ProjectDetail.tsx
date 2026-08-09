@@ -24,6 +24,17 @@ const techStack = ["Python", "React.js", "TensorFlow", "CCXT", "OpenAI APIs", "S
 
 const additionalProjects = [
   {
+    id: "osteria-restaurant",
+    title: "Osteria Bella Restaurant",
+    subtitle: "Full-Stack Ordering & Kitchen Management System",
+    category: "Full-Stack Web & HCI",
+    description:
+      "A premium food ordering & kitchen management system with a warm Italian bistro aesthetic built to HCI standards. Includes real-time kitchen status tracking, BI analytics widgets, menu CRUD operations, and customer review ratings.",
+    techStack: ["React", "Node.js", "Express", "Supabase", "Tailwind CSS", "Recharts", "HCI"],
+    liveUrl: "https://osteriarestaurant.vercel.app/",
+    githubUrl: "https://github.com/musmanshamsi",
+  },
+  {
     id: "portfolio-site",
     title: "Interactive Atlas Portfolio",
     subtitle: "React 19 & TypeScript Web Application",
@@ -31,6 +42,7 @@ const additionalProjects = [
     description:
       "Modern interactive portfolio built with React 19, TypeScript, and Framer Motion featuring an Atlas stage carousel, dynamic appointment scheduling, and automated email dispatch.",
     techStack: ["React 19", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion"],
+    liveUrl: "https://musmanshamsi.vercel.app/",
     githubUrl: "https://github.com/musmanshamsi/musmanshamsi",
   },
   {
@@ -41,16 +53,6 @@ const additionalProjects = [
     description:
       "Real-time computer vision pipeline leveraging OpenCV and TensorFlow for automated feature extraction, object tracking, and image classification.",
     techStack: ["Python", "OpenCV", "TensorFlow", "NumPy", "Deep Learning"],
-    githubUrl: "https://github.com/musmanshamsi",
-  },
-  {
-    id: "automation-crawler",
-    title: "High-Throughput Data Crawler",
-    subtitle: "Real-Time Telemetry & Alerting Engine",
-    category: "Automation & Scripting",
-    description:
-      "Asynchronous Python web scraper and market monitoring system designed for high-frequency data extraction, filtering, and database persistence.",
-    techStack: ["Python", "AsyncIO", "SQLite", "REST APIs", "BeautifulSoup"],
     githubUrl: "https://github.com/musmanshamsi",
   },
 ];
@@ -268,14 +270,26 @@ export default function ProjectDetail() {
                     ))}
                   </div>
 
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-bold hover:underline pt-1"
-                  >
-                    Repository & Details &rarr;
-                  </a>
+                  <div className="flex items-center gap-3 pt-1">
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-bold hover:underline"
+                      >
+                        Live Web App &rarr;
+                      </a>
+                    )}
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-neutral-400 font-medium hover:text-white transition-colors"
+                    >
+                      Repository &rarr;
+                    </a>
+                  </div>
                 </div>
               </motion.article>
             ))}
