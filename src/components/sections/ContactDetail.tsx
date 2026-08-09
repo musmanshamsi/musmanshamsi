@@ -7,6 +7,7 @@ import {
   ExternalLink,
   Calendar,
   AlertCircle,
+  Download,
 } from "lucide-react";
 import { useSiteSettings } from "../../context/SiteSettingsContext";
 
@@ -17,6 +18,15 @@ const contactLinks = [
     value: "m.usman.shamsi.pak@gmail.com",
     href: "mailto:m.usman.shamsi.pak@gmail.com",
     cta: "Send Email",
+    accent: "#d6b26f",
+  },
+  {
+    icon: Download,
+    label: "Resume PDF",
+    value: "Usman-Shamsi-Resume.pdf",
+    href: "/resume.pdf",
+    download: "Usman-Shamsi-Resume.pdf",
+    cta: "Download PDF Resume",
     accent: "#d6b26f",
   },
   {
@@ -282,6 +292,7 @@ export default function ContactDetail() {
                   {item.href && (
                     <a
                       href={item.href}
+                      download={item.download}
                       target={item.external ? "_blank" : "_self"}
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-bold hover:underline pt-1"

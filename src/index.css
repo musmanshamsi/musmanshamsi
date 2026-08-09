@@ -2170,6 +2170,31 @@ a:focus-visible {
   background: rgba(255,255,255,0.16);
 }
 
+.ov2-btn-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid var(--champagne);
+  background: rgba(214, 178, 111, 0.16);
+  color: var(--champagne);
+  font-size: 13px;
+  font-weight: 800;
+  backdrop-filter: blur(18px);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 220ms ease, background 220ms ease, box-shadow 220ms ease;
+}
+
+.ov2-btn-accent:hover {
+  transform: translateY(-2px);
+  background: var(--champagne);
+  color: #0f0f0f;
+  box-shadow: 0 8px 24px rgba(214, 178, 111, 0.35);
+}
+
 .ov2-btn-ghost {
   display: inline-flex;
   align-items: center;
