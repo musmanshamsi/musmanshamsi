@@ -24,10 +24,23 @@ const techStack = ["Python", "React.js", "TensorFlow", "CCXT", "OpenAI APIs", "S
 
 const additionalProjects = [
   {
+    id: "osteria-restaurant",
+    title: "Osteria Bella Restaurant",
+    subtitle: "Full-Stack Ordering & Kitchen System",
+    category: "Full-Stack & HCI Web",
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
+    description:
+      "A premium food ordering and kitchen management system built with a warm Italian bistro aesthetic adhering to strict HCI standards. Features live kitchen status tracking, BI analytics, menu CRUD, and a customer review rating system.",
+    techStack: ["React", "Node.js", "Express", "Supabase", "Tailwind CSS", "Recharts", "HCI"],
+    liveUrl: "https://osteriarestaurant.vercel.app/",
+    githubUrl: "https://github.com/musmanshamsi/osteriarestaurant",
+  },
+  {
     id: "portfolio-site",
     title: "Interactive Atlas Portfolio",
     subtitle: "React 19 & TypeScript Web Application",
     category: "Full-Stack Web",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
     description:
       "Modern interactive portfolio built with React 19, TypeScript, and Framer Motion featuring an Atlas stage carousel, dynamic appointment scheduling, and automated email dispatch.",
     techStack: ["React 19", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion"],
@@ -39,6 +52,7 @@ const additionalProjects = [
     title: "AI Vision & Detection Pipeline",
     subtitle: "Computer Vision & Deep Learning System",
     category: "AI & Machine Learning",
+    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80",
     description:
       "Real-time computer vision pipeline leveraging OpenCV and TensorFlow for automated feature extraction, object tracking, and image classification.",
     techStack: ["Python", "OpenCV", "TensorFlow", "NumPy", "Deep Learning"],
@@ -194,117 +208,7 @@ export default function ProjectDetail() {
           </div>
         </motion.div>
 
-        {/* ── OSTERIA BELLA RESTAURANT FEATURED SHOWCASE CARD ── */}
-        <motion.article {...fadeUp(0.38)} className="my-10 p-8 rounded-3xl bg-neutral-900/90 border border-amber-500/30 hover:border-amber-500/60 transition-all shadow-2xl space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral-800 pb-6">
-            <div className="space-y-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-mono font-bold uppercase tracking-wider">
-                  Class Project · Full-Stack & HCI
-                </span>
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-mono font-semibold flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Web App
-                </span>
-              </div>
-              <h3 className="text-3xl font-extrabold text-white tracking-tight mt-2">
-                Osteria Bella Restaurant
-              </h3>
-              <p className="text-sm font-medium text-amber-400/90 font-mono">
-                Full-Stack Food Ordering & Kitchen Management System
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <a
-                href="https://osteriarestaurant.vercel.app/"
-                target="_blank"
-                rel="noreferrer"
-                className="px-5 py-2.5 rounded-xl bg-amber-500 text-neutral-950 font-bold text-xs hover:bg-amber-400 transition-all shadow-lg flex items-center gap-2"
-              >
-                <Globe size={15} /> Visit Live Website &rarr;
-              </a>
-              <a
-                href="https://github.com/musmanshamsi/osteriarestaurant"
-                target="_blank"
-                rel="noreferrer"
-                className="px-4 py-2.5 rounded-xl bg-neutral-800 text-neutral-300 font-bold text-xs hover:bg-neutral-700 hover:text-white transition-all flex items-center gap-2"
-              >
-                <ExternalLink size={14} /> GitHub Repo
-              </a>
-            </div>
-          </div>
-
-          <p className="text-sm text-neutral-300 leading-relaxed max-w-4xl">
-            Osteria Bella is a premium, full-stack food ordering and kitchen management system designed with a warm, authentic Italian bistro aesthetic. The application adheres to strict HCI (Human-Computer Interaction) standards and provides clean separation of concerns across a three-tier architecture.
-          </p>
-
-          {/* 5 Core Feature Pillars Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
-              <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
-                <Utensils size={15} /> Customer Experience
-              </div>
-              <p className="text-xs text-neutral-400 leading-normal">
-                Seamless, intuitive menu browsing, cart management, and order placement.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
-              <div className="flex items-center gap-2 text-blue-400 font-bold text-xs">
-                <LayoutDashboard size={15} /> Admin Dashboard
-              </div>
-              <p className="text-xs text-neutral-400 leading-normal">
-                Real-time kitchen order management with live status tracking.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
-              <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
-                <BarChart3 size={15} /> Business Intelligence
-              </div>
-              <p className="text-xs text-neutral-400 leading-normal">
-                Analytics widgets displaying revenue, orders, and category-wise sales.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
-              <div className="flex items-center gap-2 text-purple-400 font-bold text-xs">
-                <CheckCircle2 size={15} /> Menu Management
-              </div>
-              <p className="text-xs text-neutral-400 leading-normal">
-                Complete CRUD operations for menu items with availability control.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
-              <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
-                <Star size={15} /> Review System
-              </div>
-              <p className="text-xs text-neutral-400 leading-normal">
-                Customers can rate items, leave feedback, and view dish ratings.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
-              <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs">
-                <Layers size={15} /> Three-Tier Architecture
-              </div>
-              <p className="text-xs text-neutral-400 leading-normal">
-                Frontend &rarr; Backend &rarr; Database with proper error handling and responsive design.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-800/60">
-            {["React.js", "Node.js", "Express", "Supabase / PostgreSQL", "Tailwind CSS", "Recharts", "HCI Usability"].map((tech) => (
-              <span key={tech} className="px-2.5 py-1 rounded-lg bg-neutral-950 text-neutral-400 border border-neutral-800 text-[11px] font-mono">
-                {tech}
-              </span>
-            ))}
-          </div>
-        </motion.article>
-
-        {/* ── ADDITIONAL PROJECTS GRID ── */}
+        {/* ── OTHER FEATURED PROJECTS GRID ── */}
         <motion.div {...fadeUp(0.4)} className="pt-8 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-neutral-800/80 pb-4 gap-2">
             <div>
@@ -328,66 +232,90 @@ export default function ProjectDetail() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="group relative p-6 rounded-2xl bg-neutral-900/80 border border-neutral-800/90 hover:border-amber-500/40 transition-all flex flex-col justify-between hover:shadow-xl hover:shadow-amber-500/5 hover:-translate-y-1"
+                className="group relative rounded-2xl bg-neutral-900/80 border border-neutral-800/90 hover:border-amber-500/40 transition-all flex flex-col justify-between hover:shadow-xl hover:shadow-amber-500/5 hover:-translate-y-1 overflow-hidden"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-semibold">
-                      {project.category}
-                    </span>
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="p-1.5 rounded-lg bg-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-700 transition-colors"
-                      title="View GitHub Repository"
-                    >
-                      <ExternalLink size={14} />
-                    </a>
-                  </div>
-
-                  <h4 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors">
-                    {project.title}
-                  </h4>
-                  <p className="text-xs font-medium text-amber-400/80 font-mono">
-                    {project.subtitle}
-                  </p>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
-                    {project.description}
-                  </p>
-                </div>
-
-                <div className="pt-4 mt-4 border-t border-neutral-800/60 space-y-3">
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-0.5 rounded-md bg-neutral-950 text-neutral-400 border border-neutral-800 text-[10px] font-mono"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center gap-3 pt-1">
+                {/* Visual Image Header */}
+                {project.image && (
+                  <div className="relative h-44 w-full overflow-hidden bg-neutral-950">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/40 to-transparent" />
                     {project.liveUrl && (
                       <a
                         href={project.liveUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-bold hover:underline"
+                        className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-emerald-500/90 hover:bg-emerald-400 text-neutral-950 text-[10px] font-bold tracking-wider uppercase backdrop-blur-md transition-colors flex items-center gap-1 shadow-lg"
                       >
-                        Live Web App &rarr;
+                        <span className="w-1.5 h-1.5 rounded-full bg-neutral-950 animate-pulse" /> Live Web App ↗
                       </a>
                     )}
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs text-neutral-400 font-medium hover:text-white transition-colors"
-                    >
-                      Repository &rarr;
-                    </a>
+                  </div>
+                )}
+
+                <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-semibold">
+                        {project.category}
+                      </span>
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-1.5 rounded-lg bg-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-700 transition-colors"
+                        title="View GitHub Repository"
+                      >
+                        <ExternalLink size={14} />
+                      </a>
+                    </div>
+
+                    <h4 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
+                      {project.title}
+                    </h4>
+                    <p className="text-xs font-medium text-amber-400/80 font-mono">
+                      {project.subtitle}
+                    </p>
+                    <p className="text-xs text-neutral-400 leading-relaxed">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-neutral-800/60 space-y-3 mt-auto">
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.techStack.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-0.5 rounded-md bg-neutral-950 text-neutral-400 border border-neutral-800 text-[10px] font-mono"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-1">
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-bold hover:underline"
+                        >
+                          Visit Live Web App &rarr;
+                        </a>
+                      )}
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-neutral-400 font-medium hover:text-white transition-colors"
+                      >
+                        Repository &rarr;
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.article>
