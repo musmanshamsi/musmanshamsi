@@ -95,7 +95,7 @@ export default function ContactDetail() {
       // ignore
     }
 
-    // Direct Form API submit
+    // Direct Form API submit via FormSubmit
     try {
       await fetch("https://formsubmit.co/ajax/m.usman.shamsi.pak@gmail.com", {
         method: "POST",
@@ -112,8 +112,8 @@ export default function ContactDetail() {
           _captcha: "false",
         }),
       });
-    } catch {
-      // Fallback
+    } catch (err) {
+      console.error("Email submission error:", err);
     }
 
     setEmailSending(false);
@@ -179,9 +179,45 @@ export default function ContactDetail() {
       // ignore
     }
 
+    // Send email notification to Usman for Appointment
+    try {
+      await fetch("https://formsubmit.co/ajax/m.usman.shamsi.pak@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          Request_Type: "Appointment Booking",
+          Name: apptForm.name,
+          Email: apptForm.email,
+          Requested_Date: apptForm.date,
+          Requested_Time: apptForm.time,
+          Agenda_Notes: apptForm.message || "None provided",
+          _subject: `📅 New Appointment Request: ${apptForm.name} (${apptForm.date} @ ${apptForm.time})`,
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+    } catch (err) {
+      console.error("Appointment email submission error:", err);
+    }
+
     setApptSending(false);
     setApptSubmitted(true);
   };
+
+  const emailMailtoUrl = `mailto:m.usman.shamsi.pak@gmail.com?subject=${encodeURIComponent(
+    `Portfolio Message from ${emailForm.name || "Visitor"}`
+  )}&body=${encodeURIComponent(
+    `Name: ${emailForm.name}\nEmail: ${emailForm.email}\n\nMessage:\n${emailForm.message}`
+  )}`;
+
+  const apptMailtoUrl = `mailto:m.usman.shamsi.pak@gmail.com?subject=${encodeURIComponent(
+    `Appointment Request: ${apptForm.name || "Visitor"} (${apptForm.date} @ ${apptForm.time})`
+  )}&body=${encodeURIComponent(
+    `Name: ${apptForm.name}\nEmail: ${apptForm.email}\nRequested Date: ${apptForm.date}\nRequested Time: ${apptForm.time}\n\nAgenda:\n${apptForm.message}`
+  )}`;
 
   return (
     <div className="space-y-12 max-w-5xl mx-auto pb-12">
@@ -260,12 +296,20 @@ export default function ContactDetail() {
                 <p className="text-xs text-neutral-400 max-w-sm mx-auto">
                   Your message has been sent directly to <span className="text-amber-400 font-mono">m.usman.shamsi.pak@gmail.com</span>. I will get back to you shortly!
                 </p>
-                <button
-                  onClick={() => setEmailSubmitted(false)}
-                  className="px-5 py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-white transition-colors"
-                >
-                  Send Another Message
-                </button>
+                <div className="flex flex-wrap gap-3 justify-center pt-2">
+                  <a
+                    href={emailMailtoUrl}
+                    className="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
+                  >
+                    <Mail size={14} /> Open in Email App
+                  </a>
+                  <button
+                    onClick={() => setEmailSubmitted(false)}
+                    className="px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-white transition-colors"
+                  >
+                    Send Another Message
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleEmailSubmit} className="space-y-4">
@@ -334,12 +378,20 @@ export default function ContactDetail() {
                 Your consultation request for <span className="text-amber-400 font-bold">{apptForm.date}</span> at{" "}
                 <span className="text-amber-400 font-bold">{apptForm.time}</span> has been received.
               </p>
-              <button
-                onClick={() => setApptSubmitted(false)}
-                className="px-5 py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-white transition-colors"
-              >
-                Book Another Slot
-              </button>
+              <div className="flex flex-wrap gap-3 justify-center pt-2">
+                <a
+                  href={apptMailtoUrl}
+                  className="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
+                >
+                  <Mail size={14} /> Open in Email App
+                </a>
+                <button
+                  onClick={() => setApptSubmitted(false)}
+                  className="px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-white transition-colors"
+                >
+                  Book Another Slot
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleApptSubmit} className="space-y-5">
