@@ -31,9 +31,8 @@ export default function AtlasHeader({
           <img
             src="/images/profile_image.png"
             alt="Muhammad Usman"
-            className="w-8 h-8 rounded-full object-cover border border-amber-400/50 shadow-sm"
+            className="w-full h-full rounded-full object-cover"
           />
-          <span>MU</span>
         </button>
 
         <nav className="desktop-nav" aria-label="Portfolio sections">
