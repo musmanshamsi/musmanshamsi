@@ -1,39 +1,37 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Globe, LayoutDashboard, BarChart3, Star, Layers, CheckCircle2, Utensils } from "lucide-react";
 
-const stats = [
-  { value: "85%+", label: "Predictive Filtering Accuracy" },
-  { value: "<1s", label: "Opportunity Detection Speed" },
-  { value: "7", label: "Technologies Integrated" },
-  { value: "FYP", label: "Academic Classification" },
+const osteriaStats = [
+  { value: "100%", label: "HCI Usability Compliance" },
+  { value: "3-Tier", label: "Frontend → Backend → Database" },
+  { value: "Real-Time", label: "Kitchen Status Tracking" },
+  { value: "Class Project", label: "Academic Classification" },
 ];
 
-const features = [
-  "Real-time market data monitoring",
-  "Cross-exchange arbitrage detection",
-  "Triangular arbitrage detection",
-  "AI-based predictive filtering",
-  "React.js web interface",
-  "Exchange integration via CCXT",
-  "SQLite & MySQL database support",
-  "OpenAI API integration",
-  "Sub-second opportunity detection",
+const osteriaFeatures = [
+  "Seamless customer menu browsing, cart & order placement",
+  "Real-time kitchen order management with live status tracking",
+  "Business Intelligence analytics (revenue, orders, category sales)",
+  "Complete CRUD menu management with item availability control",
+  "5-star customer rating & feedback review system",
+  "Three-tier architecture with clean separation of concerns",
+  "Proper error handling & responsive mobile-first UI",
+  "Warm authentic Italian bistro design aesthetic",
 ];
 
-const techStack = ["Python", "React.js", "TensorFlow", "CCXT", "OpenAI APIs", "SQLite", "MySQL"];
+const osteriaTech = ["React.js", "Node.js", "Express", "Supabase", "Tailwind CSS", "Recharts", "HCI Principles"];
 
 const additionalProjects = [
   {
-    id: "osteria-restaurant",
-    title: "Osteria Bella Restaurant",
-    subtitle: "Full-Stack Ordering & Kitchen System",
-    category: "Full-Stack & HCI Web",
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
+    id: "arbitrage-bot",
+    title: "ArbitrageBot",
+    subtitle: "AI Cryptocurrency Arbitrage Trading System",
+    category: "AI & Automation",
+    image: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&q=80",
     description:
-      "A premium food ordering and kitchen management system built with a warm Italian bistro aesthetic adhering to strict HCI standards. Features live kitchen status tracking, BI analytics, menu CRUD, and a customer review rating system.",
-    techStack: ["React", "Node.js", "Express", "Supabase", "Tailwind CSS", "Recharts", "HCI"],
-    liveUrl: "https://osteriarestaurant.vercel.app/",
-    githubUrl: "https://github.com/musmanshamsi/osteriarestaurant",
+      "An AI-powered cryptocurrency arbitrage system built to monitor market data, identify cross-exchange opportunities, and execute sub-second predictive filtering.",
+    techStack: ["Python", "React.js", "TensorFlow", "CCXT", "OpenAI APIs", "MySQL"],
+    githubUrl: "https://github.com/musmanshamsi/ArbitrageBotFYP.git",
   },
   {
     id: "portfolio-site",
@@ -74,69 +72,66 @@ export default function ProjectDetail() {
 
         {/* ── HEADER ── */}
         <motion.div {...fadeUp(0)} className="proj2-header">
-          <p className="proj2-kicker">02 / Featured Project · Final Year Project</p>
-          <h2 className="proj2-title">ArbitrageBot</h2>
+          <p className="proj2-kicker">02 / Featured Project · Class Project</p>
+          <h2 className="proj2-title">Osteria Bella Restaurant</h2>
           <p className="proj2-intro">
-            An AI-powered cryptocurrency arbitrage platform built to monitor real-time
-            market data and identify cross-exchange and triangular arbitrage opportunities.
-            Developed as an academic software engineering project at Sukkur IBA University.
+            A premium, full-stack food ordering and kitchen management system designed with a warm, authentic Italian bistro aesthetic adhering to strict HCI (Human-Computer Interaction) standards.
           </p>
         </motion.div>
 
         {/* ── STAT STRIP ── */}
         <motion.div {...fadeUp(0.1)} className="proj2-stat-strip">
-          {stats.map((s, i) => (
+          {osteriaStats.map((s, i) => (
             <div key={s.label} className="proj2-stat">
               <span className="proj2-stat-value">{s.value}</span>
               <span className="proj2-stat-label">{s.label}</span>
-              {i < stats.length - 1 && <div className="proj2-stat-divider" />}
+              {i < osteriaStats.length - 1 && <div className="proj2-stat-divider" />}
             </div>
           ))}
         </motion.div>
 
         {/* ── CASE STUDY HERO CARD ── */}
         <motion.article {...fadeUp(0.15)} className="proj2-hero-card">
-          <div className="proj2-hero-badge">Case Study</div>
-          <h3>Smarter Crypto Trading Through Automation</h3>
+          <div className="proj2-hero-badge">Featured Web App</div>
+          <h3>Full-Stack Ordering & Kitchen Management System</h3>
           <p>
-            ArbitrageBot is my Final Year Project developed to explore automation,
-            artificial intelligence, and real-time financial market analysis. The system
-            monitors cryptocurrency market data across exchanges and identifies potential
-            arbitrage opportunities, including cross-exchange and triangular arbitrage.
-            It combines Python-based backend logic, React.js interface design,
-            TensorFlow-based predictive filtering, CCXT exchange integrations, OpenAI API
-            support, and SQLite/MySQL database management.
+            Osteria Bella is a premium, full-stack food ordering and kitchen management system designed with a warm, authentic Italian bistro aesthetic. The application adheres to strict HCI standards and provides seamless customer menu browsing, real-time kitchen order status tracking, live Business Intelligence analytics, complete menu CRUD management, and a customer review rating system across a clean three-tier architecture.
           </p>
-          <a
-            href="https://github.com/musmanshamsi/ArbitrageBotFYP.git"
-            target="_blank"
-            rel="noreferrer"
-            className="proj2-hero-cta"
-          >
-            View on GitHub →
-          </a>
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <a
+              href="https://osteriarestaurant.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="proj2-hero-cta inline-flex items-center gap-2"
+            >
+              <Globe size={16} /> Visit Live Web App →
+            </a>
+            <a
+              href="https://github.com/musmanshamsi/osteriarestaurant"
+              target="_blank"
+              rel="noreferrer"
+              className="px-5 py-3 rounded-full bg-neutral-800 text-neutral-200 font-bold text-xs hover:bg-neutral-700 hover:text-white transition-all inline-flex items-center gap-2"
+            >
+              <ExternalLink size={14} /> GitHub Repository
+            </a>
+          </div>
         </motion.article>
 
         {/* ── PROBLEM / SOLUTION GRID ── */}
         <motion.div {...fadeUp(0.2)} className="proj2-ps-grid">
           <article className="proj2-ps-card proj2-problem">
             <span className="proj2-ps-badge">The Problem</span>
-            <h3>Fast-Moving, Hard-to-Track Opportunities</h3>
+            <h3>Fragmented Restaurant & Kitchen Operations</h3>
             <p>
-              Cryptocurrency prices vary across exchanges, creating short-lived arbitrage
-              windows. These opportunities are nearly impossible to detect manually because
-              market prices change within fractions of a second.
+              Traditional restaurant ordering workflows suffer from manual order errors, lack of real-time kitchen status tracking, and absent business intelligence visibility for management.
             </p>
           </article>
 
           <article className="proj2-ps-card proj2-solution">
             <span className="proj2-ps-badge">The Solution</span>
-            <h3>Automated Detection & Predictive Filtering</h3>
+            <h3>Three-Tier HCI Architecture & Real-Time Tracking</h3>
             <p>
-              ArbitrageBot automates market monitoring, integrates exchange data feeds via
-              CCXT, applies TensorFlow-based predictive filtering to reduce noise, and
-              presents detected opportunities through a React.js interface — all without
-              manual intervention.
+              Osteria Bella provides an end-to-end digital platform: intuitive customer ordering, live kitchen order management (Pending → Preparing → Ready → Delivered), BI sales analytics, menu availability controls, and customer feedback.
             </p>
           </article>
         </motion.div>
@@ -147,17 +142,14 @@ export default function ProjectDetail() {
           {/* My Contribution */}
           <article className="proj2-contribution">
             <span className="proj2-section-label">My Contribution</span>
-            <h3>Full-Stack Development & AI Integration</h3>
+            <h3>Full-Stack System Architecture & HCI Usability</h3>
             <p>
-              I worked across the full development lifecycle — system architecture, Python
-              backend, AI/ML integration with TensorFlow and OpenAI APIs, exchange data
-              handling through CCXT, React.js interface design, database schema, and
-              end-to-end project presentation at iCOMET.
+              I designed and built the complete three-tier architecture — React frontend with Tailwind CSS and warm bistro styling, backend REST API routes, relational database integration, real-time kitchen management board, Recharts analytics widgets, and customer feedback review system.
             </p>
 
             {/* Tech tags */}
             <div className="proj2-tech-tags">
-              {techStack.map((t) => (
+              {osteriaTech.map((t) => (
                 <span key={t} className="proj2-tech-tag">{t}</span>
               ))}
             </div>
@@ -165,9 +157,9 @@ export default function ProjectDetail() {
 
           {/* Features checklist */}
           <article className="proj2-features">
-            <span className="proj2-section-label">Key Features</span>
+            <span className="proj2-section-label">Key System Features</span>
             <ul className="proj2-feature-list">
-              {features.map((f) => (
+              {osteriaFeatures.map((f) => (
                 <li key={f} className="proj2-feature-item">
                   <span className="proj2-feature-dot" aria-hidden="true" />
                   {f}
