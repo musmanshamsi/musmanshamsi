@@ -234,90 +234,66 @@ export default function ProjectDetail() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="group relative rounded-2xl bg-neutral-900/80 border border-neutral-800/90 hover:border-amber-500/40 transition-all flex flex-col justify-between hover:shadow-xl hover:shadow-amber-500/5 hover:-translate-y-1 overflow-hidden"
+                className="group relative p-6 rounded-2xl bg-neutral-900/80 border border-neutral-800/90 hover:border-amber-500/40 transition-all flex flex-col justify-between hover:shadow-xl hover:shadow-amber-500/5 hover:-translate-y-1"
               >
-                {/* Visual Image Header */}
-                {project.image && (
-                  <div className="relative h-44 w-full overflow-hidden bg-neutral-950">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/40 to-transparent" />
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-semibold">
+                      {project.category}
+                    </span>
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-1.5 rounded-lg bg-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-700 transition-colors"
+                      title="View GitHub Repository"
+                    >
+                      <ExternalLink size={14} />
+                    </a>
+                  </div>
+
+                  <h4 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors">
+                    {project.title}
+                  </h4>
+                  <p className="text-xs font-medium text-amber-400/80 font-mono">
+                    {project.subtitle}
+                  </p>
+                  <p className="text-xs text-neutral-400 leading-relaxed">
+                    {project.description}
+                  </p>
+                </div>
+
+                <div className="pt-4 mt-4 border-t border-neutral-800/60 space-y-3">
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.techStack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2 py-0.5 rounded-md bg-neutral-950 text-neutral-400 border border-neutral-800 text-[10px] font-mono"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-1">
                     {project.liveUrl && (
                       <a
                         href={project.liveUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-emerald-500/90 hover:bg-emerald-400 text-neutral-950 text-[10px] font-bold tracking-wider uppercase backdrop-blur-md transition-colors flex items-center gap-1 shadow-lg"
+                        className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-bold hover:underline"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-neutral-950 animate-pulse" /> Live Web App ↗
+                        Live Web App &rarr;
                       </a>
                     )}
-                  </div>
-                )}
-
-                <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-semibold">
-                        {project.category}
-                      </span>
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-1.5 rounded-lg bg-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-700 transition-colors"
-                        title="View GitHub Repository"
-                      >
-                        <ExternalLink size={14} />
-                      </a>
-                    </div>
-
-                    <h4 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
-                      {project.title}
-                    </h4>
-                    <p className="text-xs font-medium text-amber-400/80 font-mono">
-                      {project.subtitle}
-                    </p>
-                    <p className="text-xs text-neutral-400 leading-relaxed">
-                      {project.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-neutral-800/60 space-y-3 mt-auto">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.techStack.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-0.5 rounded-md bg-neutral-950 text-neutral-400 border border-neutral-800 text-[10px] font-mono"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center gap-3 pt-1">
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-bold hover:underline"
-                        >
-                          Visit Live Web App &rarr;
-                        </a>
-                      )}
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs text-neutral-400 font-medium hover:text-white transition-colors"
-                      >
-                        Repository &rarr;
-                      </a>
-                    </div>
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-neutral-400 font-medium hover:text-white transition-colors"
+                    >
+                      Repository &rarr;
+                    </a>
                   </div>
                 </div>
               </motion.article>
