@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Globe, LayoutDashboard, BarChart3, Star, Layers, CheckCircle2, Utensils } from "lucide-react";
 
 const stats = [
   { value: "85%+", label: "Predictive Filtering Accuracy" },
@@ -23,17 +23,6 @@ const features = [
 const techStack = ["Python", "React.js", "TensorFlow", "CCXT", "OpenAI APIs", "SQLite", "MySQL"];
 
 const additionalProjects = [
-  {
-    id: "osteria-restaurant",
-    title: "Osteria Bella Restaurant",
-    subtitle: "Full-Stack Ordering & Kitchen Management System",
-    category: "Full-Stack Web & HCI",
-    description:
-      "A premium food ordering & kitchen management system with a warm Italian bistro aesthetic built to HCI standards. Includes real-time kitchen status tracking, BI analytics widgets, menu CRUD operations, and customer review ratings.",
-    techStack: ["React", "Node.js", "Express", "Supabase", "Tailwind CSS", "Recharts", "HCI"],
-    liveUrl: "https://osteriarestaurant.vercel.app/",
-    githubUrl: "https://github.com/musmanshamsi",
-  },
   {
     id: "portfolio-site",
     title: "Interactive Atlas Portfolio",
@@ -204,6 +193,116 @@ export default function ProjectDetail() {
             <span className="proj2-meta-value">Mar 2025 – May 2026</span>
           </div>
         </motion.div>
+
+        {/* ── OSTERIA BELLA RESTAURANT FEATURED SHOWCASE CARD ── */}
+        <motion.article {...fadeUp(0.38)} className="my-10 p-8 rounded-3xl bg-neutral-900/90 border border-amber-500/30 hover:border-amber-500/60 transition-all shadow-2xl space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral-800 pb-6">
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-mono font-bold uppercase tracking-wider">
+                  Class Project · Full-Stack & HCI
+                </span>
+                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-mono font-semibold flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Web App
+                </span>
+              </div>
+              <h3 className="text-3xl font-extrabold text-white tracking-tight mt-2">
+                Osteria Bella Restaurant
+              </h3>
+              <p className="text-sm font-medium text-amber-400/90 font-mono">
+                Full-Stack Food Ordering & Kitchen Management System
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="https://osteriarestaurant.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+                className="px-5 py-2.5 rounded-xl bg-amber-500 text-neutral-950 font-bold text-xs hover:bg-amber-400 transition-all shadow-lg flex items-center gap-2"
+              >
+                <Globe size={15} /> Visit Live Website &rarr;
+              </a>
+              <a
+                href="https://github.com/musmanshamsi/osteriarestaurant"
+                target="_blank"
+                rel="noreferrer"
+                className="px-4 py-2.5 rounded-xl bg-neutral-800 text-neutral-300 font-bold text-xs hover:bg-neutral-700 hover:text-white transition-all flex items-center gap-2"
+              >
+                <ExternalLink size={14} /> GitHub Repo
+              </a>
+            </div>
+          </div>
+
+          <p className="text-sm text-neutral-300 leading-relaxed max-w-4xl">
+            Osteria Bella is a premium, full-stack food ordering and kitchen management system designed with a warm, authentic Italian bistro aesthetic. The application adheres to strict HCI (Human-Computer Interaction) standards and provides clean separation of concerns across a three-tier architecture.
+          </p>
+
+          {/* 5 Core Feature Pillars Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
+              <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
+                <Utensils size={15} /> Customer Experience
+              </div>
+              <p className="text-xs text-neutral-400 leading-normal">
+                Seamless, intuitive menu browsing, cart management, and order placement.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
+              <div className="flex items-center gap-2 text-blue-400 font-bold text-xs">
+                <LayoutDashboard size={15} /> Admin Dashboard
+              </div>
+              <p className="text-xs text-neutral-400 leading-normal">
+                Real-time kitchen order management with live status tracking.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
+              <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                <BarChart3 size={15} /> Business Intelligence
+              </div>
+              <p className="text-xs text-neutral-400 leading-normal">
+                Analytics widgets displaying revenue, orders, and category-wise sales.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
+              <div className="flex items-center gap-2 text-purple-400 font-bold text-xs">
+                <CheckCircle2 size={15} /> Menu Management
+              </div>
+              <p className="text-xs text-neutral-400 leading-normal">
+                Complete CRUD operations for menu items with availability control.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
+              <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
+                <Star size={15} /> Review System
+              </div>
+              <p className="text-xs text-neutral-400 leading-normal">
+                Customers can rate items, leave feedback, and view dish ratings.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
+              <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs">
+                <Layers size={15} /> Three-Tier Architecture
+              </div>
+              <p className="text-xs text-neutral-400 leading-normal">
+                Frontend &rarr; Backend &rarr; Database with proper error handling and responsive design.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-800/60">
+            {["React.js", "Node.js", "Express", "Supabase / PostgreSQL", "Tailwind CSS", "Recharts", "HCI Usability"].map((tech) => (
+              <span key={tech} className="px-2.5 py-1 rounded-lg bg-neutral-950 text-neutral-400 border border-neutral-800 text-[11px] font-mono">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </motion.article>
 
         {/* ── ADDITIONAL PROJECTS GRID ── */}
         <motion.div {...fadeUp(0.4)} className="pt-8 space-y-6">
