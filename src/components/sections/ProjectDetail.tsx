@@ -1,25 +1,25 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Globe } from "lucide-react";
 
-const osteriaStats = [
-  { value: "100%", label: "HCI Usability Compliance" },
-  { value: "3-Tier", label: "Frontend → Backend → Database" },
-  { value: "Real-Time", label: "Kitchen Status Tracking" },
-  { value: "Class Project", label: "Academic Classification" },
+const fypStats = [
+  { value: "FYP", label: "Final Year Project" },
+  { value: "3+", label: "Exchange Integrations" },
+  { value: "85%+", label: "Prediction Accuracy" },
+  { value: "iCOMET", label: "Presented 2026" },
 ];
 
-const osteriaFeatures = [
-  "Seamless customer menu browsing, cart & order placement",
-  "Real-time kitchen order management with live status tracking",
-  "Business Intelligence analytics (revenue, orders, category sales)",
-  "Complete CRUD menu management with item availability control",
-  "5-star customer rating & feedback review system",
-  "Three-tier architecture with clean separation of concerns",
-  "Proper error handling & responsive mobile-first UI",
-  "Warm authentic Italian bistro design aesthetic",
+const fypFeatures = [
+  "Cross-exchange & triangular arbitrage opportunity detection",
+  "TensorFlow ML pipeline for price prediction & signal filtering",
+  "OpenAI API integration for market sentiment analysis",
+  "CCXT connectors for real-time multi-exchange data feeds",
+  "React.js dashboard with live opportunity tracking",
+  "SQLite database for historical trade logging & analytics",
+  "Sub-second detection latency with async Python backend",
+  "Presented at iCOMET 2026 · Sukkur IBA University",
 ];
 
-const osteriaTech = ["React.js", "Node.js", "Express", "Supabase", "Tailwind CSS", "Recharts", "HCI Principles"];
+const fypTech = ["Python", "React.js", "TensorFlow", "OpenAI API", "CCXT", "SQLite", "Node.js", "REST APIs"];
 
 type ProjectItem = {
   id: string;
@@ -56,16 +56,6 @@ const additionalProjects: ProjectItem[] = [
     liveUrl: "https://musmanshamsi.vercel.app/",
     githubUrl: "https://github.com/musmanshamsi/musmanshamsi",
   },
-  {
-    id: "arbitrage-bot-fyp",
-    title: "ArbitrageBot — FYP",
-    subtitle: "AI-Powered Cryptocurrency Trading System",
-    category: "AI & Full-Stack",
-    description:
-      "Final Year Project: An AI-powered cross-exchange and triangular arbitrage detection platform with a TensorFlow ML pipeline, OpenAI API integration, CCXT exchange connectors, and a React.js dashboard. Presented at iCOMET 2026.",
-    techStack: ["Python", "React.js", "TensorFlow", "OpenAI API", "CCXT", "SQLite", "Node.js"],
-    githubUrl: "https://github.com/musmanshamsi/ArbitrageBotFYP",
-  },
 ];
 
 const fadeUp = (delay = 0) => ({
@@ -82,47 +72,39 @@ export default function ProjectDetail() {
 
         {/* ── HEADER ── */}
         <motion.div {...fadeUp(0)} className="proj2-header">
-          <p className="proj2-kicker">02 / Featured Project · Class Project</p>
-          <h2 className="proj2-title">Osteria Bella Restaurant</h2>
+          <p className="proj2-kicker">02 / Featured Project · Final Year Project</p>
+          <h2 className="proj2-title">ArbitrageBot</h2>
           <p className="proj2-intro">
-            A premium, full-stack food ordering and kitchen management system designed with a warm, authentic Italian bistro aesthetic adhering to strict HCI (Human-Computer Interaction) standards.
+            An AI-powered cryptocurrency arbitrage detection and trading system built as a Final Year Project. Combines a TensorFlow ML pipeline, OpenAI market sentiment, multi-exchange CCXT connectors, and a live React.js dashboard — presented at iCOMET 2026.
           </p>
         </motion.div>
 
         {/* ── STAT STRIP ── */}
         <motion.div {...fadeUp(0.1)} className="proj2-stat-strip">
-          {osteriaStats.map((s, i) => (
+          {fypStats.map((s, i) => (
             <div key={s.label} className="proj2-stat">
               <span className="proj2-stat-value">{s.value}</span>
               <span className="proj2-stat-label">{s.label}</span>
-              {i < osteriaStats.length - 1 && <div className="proj2-stat-divider" />}
+              {i < fypStats.length - 1 && <div className="proj2-stat-divider" />}
             </div>
           ))}
         </motion.div>
 
         {/* ── CASE STUDY HERO CARD ── */}
         <motion.article {...fadeUp(0.15)} className="proj2-hero-card">
-          <div className="proj2-hero-badge">Featured Web App</div>
-          <h3>Full-Stack Ordering & Kitchen Management System</h3>
+          <div className="proj2-hero-badge">Final Year Project · iCOMET 2026</div>
+          <h3>AI-Powered Cryptocurrency Arbitrage Detection System</h3>
           <p>
-            Osteria Bella is a premium, full-stack food ordering and kitchen management system designed with a warm, authentic Italian bistro aesthetic. The application adheres to strict HCI standards and provides seamless customer menu browsing, real-time kitchen order status tracking, live Business Intelligence analytics, complete menu CRUD management, and a customer review rating system across a clean three-tier architecture.
+            ArbitrageBot is an intelligent trading system that detects real-time cross-exchange and triangular arbitrage opportunities across cryptocurrency markets. Built using a TensorFlow ML pipeline for predictive filtering, OpenAI API for sentiment analysis, and CCXT for live multi-exchange data feeds — all visualized through a React.js dashboard with sub-second detection latency.
           </p>
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <a
-              href="https://osteriarestaurant.vercel.app/"
+              href="https://github.com/musmanshamsi/ArbitrageBotFYP"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="proj2-hero-cta inline-flex items-center gap-2"
             >
-              <Globe size={16} /> Visit Live Web App →
-            </a>
-            <a
-              href="https://github.com/musmanshamsi/osteriarestaurant"
-              target="_blank"
-              rel="noreferrer"
-              className="px-5 py-3 rounded-full bg-neutral-800 text-neutral-200 font-bold text-xs hover:bg-neutral-700 hover:text-white transition-all inline-flex items-center gap-2"
-            >
-              <ExternalLink size={14} /> GitHub Repository
+              <Globe size={16} /> View on GitHub →
             </a>
           </div>
         </motion.article>
@@ -131,17 +113,17 @@ export default function ProjectDetail() {
         <motion.div {...fadeUp(0.2)} className="proj2-ps-grid">
           <article className="proj2-ps-card proj2-problem">
             <span className="proj2-ps-badge">The Problem</span>
-            <h3>Fragmented Restaurant & Kitchen Operations</h3>
+            <h3>Missed Arbitrage Windows & Slow Manual Monitoring</h3>
             <p>
-              Traditional restaurant ordering workflows suffer from manual order errors, lack of real-time kitchen status tracking, and absent business intelligence visibility for management.
+              Cryptocurrency arbitrage opportunities last milliseconds across exchanges. Manual monitoring is impossible, and existing tools lack AI-driven prediction to filter noise from genuine signals.
             </p>
           </article>
 
           <article className="proj2-ps-card proj2-solution">
             <span className="proj2-ps-badge">The Solution</span>
-            <h3>Three-Tier HCI Architecture & Real-Time Tracking</h3>
+            <h3>Automated AI Pipeline with Real-Time Detection</h3>
             <p>
-              Osteria Bella provides an end-to-end digital platform: intuitive customer ordering, live kitchen order management (Pending → Preparing → Ready → Delivered), BI sales analytics, menu availability controls, and customer feedback.
+              ArbitrageBot automates the full cycle: live price ingestion from multiple exchanges via CCXT, TensorFlow ML filtering for signal confidence, OpenAI sentiment analysis, and instant dashboard alerts — all with sub-second latency.
             </p>
           </article>
         </motion.div>
@@ -152,14 +134,14 @@ export default function ProjectDetail() {
           {/* My Contribution */}
           <article className="proj2-contribution">
             <span className="proj2-section-label">My Contribution</span>
-            <h3>Full-Stack System Architecture & HCI Usability</h3>
+            <h3>Full-Stack AI Architecture & ML Pipeline</h3>
             <p>
-              I designed and built the complete three-tier architecture — React frontend with Tailwind CSS and warm bistro styling, backend REST API routes, relational database integration, real-time kitchen management board, Recharts analytics widgets, and customer feedback review system.
+              I led the complete system design and development — Python async backend, TensorFlow model training, CCXT exchange integrations, OpenAI API calls, SQLite data persistence, REST API layer, and the React.js live opportunity dashboard.
             </p>
 
             {/* Tech tags */}
             <div className="proj2-tech-tags">
-              {osteriaTech.map((t) => (
+              {fypTech.map((t) => (
                 <span key={t} className="proj2-tech-tag">{t}</span>
               ))}
             </div>
@@ -169,7 +151,7 @@ export default function ProjectDetail() {
           <article className="proj2-features">
             <span className="proj2-section-label">Key System Features</span>
             <ul className="proj2-feature-list">
-              {osteriaFeatures.map((f) => (
+              {fypFeatures.map((f) => (
                 <li key={f} className="proj2-feature-item">
                   <span className="proj2-feature-dot" aria-hidden="true" />
                   {f}
@@ -184,9 +166,7 @@ export default function ProjectDetail() {
         <motion.div {...fadeUp(0.3)} className="proj2-outcome">
           <p className="proj2-outcome-label">Outcome</p>
           <p className="proj2-outcome-text">
-            Achieved sub-second opportunity detection and predictive filtering accuracy
-            above 85%, demonstrating the practical application of AI and automation in
-            cryptocurrency market analysis as an academic software engineering project.
+            Achieved sub-second opportunity detection and predictive filtering accuracy above 85%, demonstrating the practical application of AI and automation in cryptocurrency market analysis. Successfully presented at iCOMET 2026 at Sukkur IBA University.
           </p>
         </motion.div>
 
