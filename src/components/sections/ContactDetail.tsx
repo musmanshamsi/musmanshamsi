@@ -29,6 +29,15 @@ const contactLinks = [
     external: true,
   },
   {
+    icon: ExternalLink,
+    label: "LinkedIn",
+    value: "linkedin.com/in/musmanshamsi",
+    href: "https://www.linkedin.com/in/musmanshamsi",
+    cta: "Open LinkedIn",
+    accent: "#60a5fa",
+    external: true,
+  },
+  {
     icon: MapPin,
     label: "Location",
     value: "Karachi, Pakistan",

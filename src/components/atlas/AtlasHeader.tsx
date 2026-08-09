@@ -69,7 +69,7 @@ export default function AtlasHeader({
           <a
             href="https://www.linkedin.com/in/musmanshamsi"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="header-icon-link"
             aria-label="Open LinkedIn profile"
           >

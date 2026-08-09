@@ -304,9 +304,9 @@ export default function ProjectDetail() {
         {/* ── BOTTOM ACTIONS ── */}
         <div className="detail-bottom-actions mt-12">
           <a
-            href="https://github.com/musmanshamsi/ArbitrageBotFYP.git"
+            href="https://github.com/musmanshamsi/ArbitrageBotFYP"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             GitHub Repository
           </a>
