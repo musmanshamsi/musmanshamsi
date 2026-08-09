@@ -57,14 +57,14 @@ const additionalProjects: ProjectItem[] = [
     githubUrl: "https://github.com/musmanshamsi/musmanshamsi",
   },
   {
-    id: "vision-pipeline",
-    title: "AI Vision & Detection Pipeline",
-    subtitle: "Computer Vision & Deep Learning System",
-    category: "AI & Machine Learning",
+    id: "arbitrage-bot-fyp",
+    title: "ArbitrageBot — FYP",
+    subtitle: "AI-Powered Cryptocurrency Trading System",
+    category: "AI & Full-Stack",
     description:
-      "Real-time computer vision pipeline leveraging OpenCV and TensorFlow for automated feature extraction, object tracking, and image classification.",
-    techStack: ["Python", "OpenCV", "TensorFlow", "NumPy", "Deep Learning"],
-    githubUrl: "https://github.com/musmanshamsi",
+      "Final Year Project: An AI-powered cross-exchange and triangular arbitrage detection platform with a TensorFlow ML pipeline, OpenAI API integration, CCXT exchange connectors, and a React.js dashboard. Presented at iCOMET 2026.",
+    techStack: ["Python", "React.js", "TensorFlow", "OpenAI API", "CCXT", "SQLite", "Node.js"],
+    githubUrl: "https://github.com/musmanshamsi/ArbitrageBotFYP",
   },
 ];
 
