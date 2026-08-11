@@ -46,6 +46,39 @@ body {
   color: var(--ink);
   overflow-x: hidden;
   overflow-y: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Allow normal text selection & focus for forms */
+input, textarea, [contenteditable="true"] {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+}
+
+/* Disable image dragging globally */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Screenshot Blur & Print Shield */
+.security-blurred-mode {
+  filter: blur(50px) opacity(0) !important;
+  transition: filter 0.05s ease !important;
+}
+
+@media print {
+  html, body {
+    display: none !important;
+    visibility: hidden !important;
+  }
 }
 
 button,
@@ -3835,10 +3868,849 @@ a:focus-visible {
 }
 
 /* =========================================================
+   CRE2 — GALLERY + REELS SECTIONS
+========================================================= */
+
+/* ── Shared section block ── */
+.cre2-section-block {
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.cre2-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.cre2-section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--champagne);
+  margin-bottom: 10px;
+}
+
+.cre2-section-title {
+  margin: 0 0 6px;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(20px, 2.8vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: white;
+  line-height: 1.1;
+}
+
+.cre2-section-desc {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Nav arrow buttons (gallery) ── */
+.cre2-nav-arrows {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  align-self: flex-end;
+  padding-bottom: 4px;
+}
+
+.cre2-nav-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    scale 0.2s ease;
+}
+
+.cre2-nav-btn:hover {
+  border-color: rgba(214,178,111,0.55);
+  background: rgba(214,178,111,0.09);
+  scale: 1.08;
+}
+
+.cre2-nav-btn:active {
+  scale: 0.93;
+}
+
+/* ── Shared scroll wrapper — provides right-edge fade ── */
+.cre2-gallery-wrapper {
+  position: relative;
+}
+
+.cre2-gallery-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 20px; /* account for padding-bottom on scroll */
+  width: 72px;
+  background: linear-gradient(to right, transparent, #0a0a0a);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ============================================================
+   GALLERY
+============================================================ */
+
+.cre2-gallery-scroll {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.cre2-gallery-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.cre2-gallery-scroll:active {
+  cursor: grabbing;
+}
+
+/* Gallery card */
+.cre2-gallery-item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    box-shadow 0.4s ease;
+}
+
+.cre2-gallery-item--wide  { width: 340px; }
+.cre2-gallery-item--narrow { width: 240px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .cre2-gallery-item {
+    transition:
+      scale 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+      box-shadow 0.4s ease;
+  }
+
+  .cre2-gallery-item.is-snapped {
+    scale: 1.025;
+    box-shadow: 0 14px 52px rgba(0,0,0,0.65);
+  }
+}
+
+/* Thumbnail */
+.cre2-gallery-thumb {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
+}
+
+.cre2-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: scale 0.5s ease;
+}
+
+.cre2-gallery-item:hover .cre2-gallery-img {
+  scale: 1.06;
+}
+
+/* Placeholder backgrounds — cinematic gradient per theme */
+.cre2-gallery-placeholder {
+  width: 100%;
+  height: 100%;
+  transition: scale 0.5s ease;
+}
+
+.cre2-gallery-item:hover .cre2-gallery-placeholder {
+  scale: 1.04;
+}
+
+[data-theme="amber"] .cre2-gallery-placeholder {
+  background:
+    radial-gradient(ellipse 80% 70% at 35% 65%, rgba(214,178,111,0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 75% 25%, rgba(200,140,20,0.12) 0%, transparent 55%),
+    linear-gradient(160deg, #0d0800 0%, #1f1000 35%, #361c00 65%, #201000 100%);
+}
+
+[data-theme="purple"] .cre2-gallery-placeholder {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 55%, rgba(167,139,250,0.2) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 35% at 25% 30%, rgba(120,60,200,0.12) 0%, transparent 55%),
+    linear-gradient(160deg, #080010 0%, #130025 35%, #220040 65%, #150028 100%);
+}
+
+[data-theme="teal"] .cre2-gallery-placeholder {
+  background:
+    radial-gradient(ellipse 70% 60% at 40% 55%, rgba(52,211,153,0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 35% at 70% 30%, rgba(0,180,120,0.1) 0%, transparent 55%),
+    linear-gradient(160deg, #001010 0%, #00211f 35%, #003630 65%, #001f1c 100%);
+}
+
+[data-theme="crimson"] .cre2-gallery-placeholder {
+  background:
+    radial-gradient(ellipse 75% 60% at 55% 50%, rgba(220,39,67,0.2) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 35% at 25% 30%, rgba(180,0,40,0.1) 0%, transparent 55%),
+    linear-gradient(160deg, #100002 0%, #22000a 35%, #3d0012 65%, #200008 100%);
+}
+
+[data-theme="navy"] .cre2-gallery-placeholder {
+  background:
+    radial-gradient(ellipse 70% 60% at 45% 45%, rgba(110,168,254,0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 35% at 70% 65%, rgba(60,100,200,0.1) 0%, transparent 55%),
+    linear-gradient(160deg, #000814 0%, #001233 35%, #001f52 65%, #000e30 100%);
+}
+
+/* Permanent bottom gradient — baseline readability */
+.cre2-gallery-base-grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+/* Clip-path reveal overlay */
+.cre2-gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.9) 0%,
+    rgba(0,0,0,0.55) 55%,
+    rgba(0,0,0,0.12) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.42s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.cre2-gallery-item:hover .cre2-gallery-overlay,
+.cre2-gallery-item.is-snapped .cre2-gallery-overlay {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Disable clip-path motion for reduced-motion users
+   but keep overlay visible so caption is always readable */
+@media (prefers-reduced-motion: reduce) {
+  .cre2-gallery-overlay {
+    clip-path: inset(0 0 0 0);
+    transition: none;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.82) 0%,
+      rgba(0,0,0,0.4) 55%,
+      transparent 100%
+    );
+  }
+}
+
+.cre2-gallery-caption {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.88);
+}
+
+/* Label bar below thumbnail */
+.cre2-gallery-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-top: none;
+  border-radius: 0 0 18px 18px;
+}
+
+.cre2-gallery-num {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--champagne);
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+.cre2-gallery-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.78);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Zoom badge on hover */
+.cre2-gallery-zoom-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  opacity: 0;
+  translate: 0 4px;
+  transition: opacity 0.28s ease, translate 0.28s ease;
+  z-index: 3;
+}
+
+.cre2-gallery-item:hover .cre2-gallery-zoom-badge {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Full-Size Lightbox Modal */
+.cre2-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(20px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.cre2-lightbox-modal {
+  position: relative;
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cre2-lightbox-img-wrap {
+  position: relative;
+  max-height: 72vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0a0a0a;
+}
+
+.cre2-lightbox-img {
+  max-height: 72vh;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+  display: block;
+}
+
+.cre2-lightbox-placeholder-full {
+  width: 100%;
+  height: 380px;
+  border-radius: 16px;
+}
+
+.cre2-lightbox-close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.cre2-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+  scale: 1.1;
+}
+
+.cre2-lightbox-info {
+  margin-top: 18px;
+  text-align: center;
+  max-width: 600px;
+}
+
+.cre2-lightbox-title {
+  margin: 0 0 6px;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+.cre2-lightbox-caption {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ============================================================
+   REELS
+============================================================ */
+
+/* Platform CTA buttons */
+.cre2-reels-ctas {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-self: flex-end;
+  padding-bottom: 4px;
+}
+
+.cre2-platform-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition:
+    opacity 0.2s ease,
+    translate 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cre2-platform-btn:hover {
+  opacity: 0.88;
+  translate: 0 -2px;
+}
+
+.cre2-platform-btn--ig {
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: white;
+  box-shadow: 0 4px 20px rgba(220,39,67,0.3);
+}
+
+.cre2-platform-btn--ig:hover {
+  box-shadow: 0 6px 28px rgba(220,39,67,0.48);
+}
+
+.cre2-platform-btn--yt {
+  background: #ff0000;
+  color: white;
+  box-shadow: 0 4px 20px rgba(255,0,0,0.25);
+}
+
+
+/* Category Filter Bar */
+.cre2-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.cre2-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.cre2-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.22s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.cre2-filter-pill:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cre2-filter-pill.is-active {
+  background: rgba(214, 178, 111, 0.14);
+  border-color: rgba(214, 178, 111, 0.5);
+  color: var(--champagne);
+  box-shadow: 0 4px 20px rgba(214, 178, 111, 0.14);
+}
+
+.cre2-filter-count {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cre2-filter-pill.is-active .cre2-filter-count {
+  background: rgba(214, 178, 111, 0.25);
+  color: var(--champagne);
+}
+
+/* Reels horizontal scroll container */
+.cre2-reels-scroll {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.cre2-reels-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.cre2-reels-scroll:active {
+  cursor: grabbing;
+}
+
+/* Portrait reel card (9:16-ish) */
+.cre2-reel-card {
+  flex: 0 0 200px;
+  height: 356px;
+  scroll-snap-align: start;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  outline-offset: 3px;
+  /* Individual transform property — GPU composited, no layout thrash */
+  translate: 0 0;
+  transition:
+    translate 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+
+/* Platform-colored glow ring via pseudo — opacity-transitioned */
+.cre2-reel-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 21px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: -1;
+}
+
+.cre2-reel-card[data-platform="instagram"]::before {
+  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.cre2-reel-card[data-platform="youtube"]::before {
+  background: #ff0000;
+}
+
+.cre2-reel-card[data-platform="facebook"]::before {
+  background: #1877f2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cre2-reel-card:hover {
+    translate: 0 -8px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.75);
+    border-color: transparent;
+  }
+
+  .cre2-reel-card:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Cinematic gradient background layer — Brand-Cohesive Platform Themes */
+.cre2-reel-bg {
+  position: absolute;
+  inset: 0;
+  transition: scale 0.5s ease, opacity 0.5s ease;
+}
+
+.cre2-reel-card:hover .cre2-reel-bg {
+  scale: 1.04;
+}
+
+/* Instagram Reels — Warm Rose-Gold & Dark Amber Glow */
+.cre2-reel-card[data-platform="instagram"] .cre2-reel-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 25%, rgba(214, 178, 111, 0.16) 0%, transparent 68%),
+    radial-gradient(ellipse 65% 45% at 20% 80%, rgba(220, 39, 67, 0.12) 0%, transparent 60%),
+    linear-gradient(180deg, #110d08 0%, #1a130c 50%, #0d0a06 100%);
+}
+
+/* YouTube Videos — Deep Obsidian & Crimson Accent Glow */
+.cre2-reel-card[data-platform="youtube"] .cre2-reel-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 25%, rgba(255, 0, 0, 0.16) 0%, transparent 68%),
+    radial-gradient(ellipse 65% 45% at 80% 80%, rgba(180, 0, 0, 0.1) 0%, transparent 60%),
+    linear-gradient(180deg, #120505 0%, #1a0808 50%, #0d0404 100%);
+}
+
+/* Facebook Videos — Deep Cobalt Blue & Atmospheric Glow */
+.cre2-reel-card[data-platform="facebook"] .cre2-reel-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 25%, rgba(24, 119, 242, 0.2) 0%, transparent 68%),
+    radial-gradient(ellipse 65% 45% at 20% 80%, rgba(10, 80, 180, 0.12) 0%, transparent 60%),
+    linear-gradient(180deg, #060e1a 0%, #091629 50%, #040912 100%);
+}
+
+
+/* Platform badge — top right corner */
+.cre2-reel-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 99px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+  z-index: 2;
+}
+
+.cre2-reel-badge--instagram {
+  background: linear-gradient(135deg, rgba(240,148,51,0.28), rgba(220,39,67,0.28), rgba(188,24,136,0.28));
+  border: 1px solid rgba(240,148,51,0.28);
+  color: rgba(255,200,178,0.9);
+}
+
+.cre2-reel-badge--youtube {
+  background: rgba(255,0,0,0.2);
+  border: 1px solid rgba(255,0,0,0.28);
+  color: rgba(255,160,160,0.9);
+}
+
+.cre2-reel-badge--facebook {
+  background: rgba(24, 119, 242, 0.2);
+  border: 1px solid rgba(24, 119, 242, 0.32);
+  color: rgba(180, 215, 255, 0.95);
+}
+
+/* Play button — centered */
+.cre2-reel-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.cre2-reel-play-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  display: grid;
+  place-items: center;
+  padding-left: 3px; /* optical centering for play triangle */
+  transition: scale 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.cre2-reel-card:hover .cre2-reel-play-btn {
+  scale: 1.16;
+  background: rgba(255,255,255,0.26);
+  border-color: rgba(255,255,255,0.55);
+}
+
+.cre2-reel-play-ring {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.35);
+}
+
+@keyframes cre2-pulse-ring {
+  0%   { scale: 1;   opacity: 0.65; }
+  100% { scale: 2.5; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cre2-reel-play-ring {
+    animation: cre2-pulse-ring 2.2s ease-out infinite;
+  }
+}
+
+/* Info bar — bottom overlay */
+.cre2-reel-info {
+  position: relative;
+  z-index: 2;
+  padding: 16px 16px 18px;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.52) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cre2-reel-label {
+  font-size: 9.5px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.48);
+}
+
+.cre2-reel-title {
+  margin: 0;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  color: white;
+  line-height: 1.25;
+}
+
+.cre2-reel-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.42);
+  margin-top: 4px;
+  transition: color 0.2s ease;
+}
+
+.cre2-reel-card:hover .cre2-reel-open {
+  color: rgba(255,255,255,0.82);
+}
+
+/* Scroll progress dots */
+.cre2-reel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 22px;
+}
+
+.cre2-reel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  border: none;
+  background: rgba(255,255,255,0.18);
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background 0.3s ease;
+  /* Minimum 44×44px touch target (Fitts's Law) via padding trick */
+  /* Using a box-shadow trick to keep visual size small while touch area is large */
+  position: relative;
+}
+
+.cre2-reel-dot::after {
+  content: "";
+  position: absolute;
+  inset: -18px -10px;
+}
+
+.cre2-reel-dot.is-active {
+  width: 26px;
+  background: var(--champagne);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cre2-reel-dot {
+    transition: none;
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .cre2-section-head {
+    flex-direction: column;
+  }
+
+  .cre2-nav-arrows,
+  .cre2-reels-ctas {
+    align-self: flex-start;
+  }
+
+  .cre2-gallery-item--wide  { width: 280px; }
+  .cre2-gallery-item--narrow { width: 200px; }
+  .cre2-gallery-thumb { height: 240px; }
+
+  .cre2-reel-card {
+    flex: 0 0 170px;
+    height: 300px;
+  }
+}
+
+
+/* =========================================================
    CONTACT V2 — TWO-COL WITH FORM
 ========================================================= */
 
 .con2-page {
+
   position: relative;
   min-height: 100dvh;
   padding: 56px 24px 64px;

@@ -17,6 +17,7 @@ import CreativeDetail from "./components/sections/CreativeDetail";
 import ContactDetail from "./components/sections/ContactDetail";
 
 import { SiteSettingsProvider } from "./context/SiteSettingsContext";
+import SecurityGuard from "./components/common/SecurityGuard";
 
 function getInitialPageIndex(): number {
   const hash = window.location.hash.replace(/^#/, "").toLowerCase();
@@ -184,8 +185,10 @@ function MainAppContent() {
 
 export default function App() {
   return (
-    <SiteSettingsProvider>
-      <MainAppContent />
-    </SiteSettingsProvider>
+    <SecurityGuard>
+      <SiteSettingsProvider>
+        <MainAppContent />
+      </SiteSettingsProvider>
+    </SecurityGuard>
   );
 }
