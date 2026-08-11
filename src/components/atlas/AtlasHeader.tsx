@@ -22,7 +22,10 @@ export default function AtlasHeader({
         </div>
       )}
 
-      <header className={`atlas-header ${announcementBanner.enabled && announcementBanner.text ? "mt-6" : ""}`}>
+      <header
+        className="atlas-header"
+        style={{ top: announcementBanner.enabled && announcementBanner.text ? "28px" : "0" }}
+      >
         <button
           className="brand"
           onClick={() => openSection(0)}

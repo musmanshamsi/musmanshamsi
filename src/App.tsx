@@ -120,12 +120,14 @@ function MainAppContent() {
           <div className="background-overlay" />
         </div>
 
+        {/* ── STICKY NAVBAR — outside atlas-shell so it sticks on scroll ── */}
+        <AtlasHeader
+          activeIndex={activeIndex}
+          openSection={selectSection}
+        />
+
         {/* ── ATLAS HERO — full viewport, always visible at top ── */}
         <section className="atlas-shell" id="top">
-          <AtlasHeader
-            activeIndex={activeIndex}
-            openSection={selectSection}
-          />
 
           <AtlasStage
             activePage={activePage}
