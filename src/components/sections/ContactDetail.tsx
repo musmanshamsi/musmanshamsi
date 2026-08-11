@@ -1,63 +1,19 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Mail,
-  MapPin,
-  CheckCircle2,
-  ExternalLink,
-  Calendar,
-  AlertCircle,
-  Download,
-} from "lucide-react";
+import { useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Calendar, AlertCircle, CheckCircle2, Send, MapPin, ExternalLink, Download, XCircle } from "lucide-react";
 import { useSiteSettings } from "../../context/SiteSettingsContext";
 
-const contactLinks = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "m.usman.shamsi.pak@gmail.com",
-    href: "mailto:m.usman.shamsi.pak@gmail.com",
-    cta: "Send Email",
-    accent: "#d6b26f",
-  },
-  {
-    icon: Download,
-    label: "Resume PDF",
-    value: "Usman-Shamsi-Resume.pdf",
-    href: "/resume.pdf",
-    download: "Usman-Shamsi-Resume.pdf",
-    cta: "Download PDF Resume",
-    accent: "#d6b26f",
-  },
-  {
-    icon: ExternalLink,
-    label: "GitHub",
-    value: "github.com/musmanshamsi",
-    href: "https://github.com/musmanshamsi",
-    cta: "Open GitHub",
-    accent: "#a78bfa",
-    external: true,
-  },
-  {
-    icon: ExternalLink,
-    label: "LinkedIn",
-    value: "linkedin.com/in/musmanshamsi",
-    href: "https://www.linkedin.com/in/musmanshamsi",
-    cta: "Open LinkedIn",
-    accent: "#60a5fa",
-    external: true,
-  },
-  {
-    icon: MapPin,
-    label: "Location",
-    value: "Karachi, Pakistan",
-    href: null,
-    cta: "Open to remote opportunities",
-    accent: "#34d399",
-  },
-];
+const isValidEmail = (email: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
 
 const timeSlots = ["10:00 AM", "11:30 AM", "02:00 PM", "03:30 PM", "05:00 PM"];
+
+const channels = [
+  { icon: Mail,         label: "Email",    value: "m.usman.shamsi.pak@gmail.com", href: "mailto:m.usman.shamsi.pak@gmail.com" },
+  { icon: ExternalLink, label: "GitHub",   value: "github.com/musmanshamsi",      href: "https://github.com/musmanshamsi", external: true },
+  { icon: ExternalLink, label: "LinkedIn", value: "linkedin.com/in/musmanshamsi", href: "https://www.linkedin.com/in/musmanshamsi", external: true },
+  { icon: Download,     label: "Resume",   value: "Usman-Shamsi-Resume.pdf",      href: "/resume.pdf", download: "Usman-Shamsi-Resume.pdf" },
+];
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 26 },
@@ -71,447 +27,385 @@ export default function ContactDetail() {
 
   const [activeTab, setActiveTab] = useState<"email" | "appointment">("email");
 
-  // Email Form State
-  const [emailForm, setEmailForm] = useState({ name: "", email: "", message: "" });
-  const [emailSending, setEmailSending] = useState(false);
+  const emailTabRef  = useRef<HTMLButtonElement>(null);
+  const apptTabRef   = useRef<HTMLButtonElement>(null);
+
+  // Email form
+  const [emailForm, setEmailForm]           = useState({ name: "", email: "", message: "" });
+  const [emailSending, setEmailSending]     = useState(false);
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [emailTouched, setEmailTouched]     = useState(false); // has user left the email field?
 
-  // Appointment Form State
-  const [apptForm, setApptForm] = useState({
-    name: "",
-    email: "",
-    date: "",
-    time: "10:00 AM",
-    message: "",
-  });
-  const [weekendError, setWeekendError] = useState("");
-  const [apptSending, setApptSending] = useState(false);
-  const [apptSubmitted, setApptSubmitted] = useState(false);
+  // Appointment form
+  const [apptForm, setApptForm]             = useState({ name: "", email: "", date: "", time: "10:00 AM", message: "" });
+  const [weekendError, setWeekendError]     = useState("");
+  const [apptSending, setApptSending]       = useState(false);
+  const [apptSubmitted, setApptSubmitted]   = useState(false);
+  const [apptEmailTouched, setApptEmailTouched] = useState(false);
 
-  // Handle Direct Email Submit
+  // Derived validation flags
+  const emailValid     = isValidEmail(emailForm.email);
+  const apptEmailValid = isValidEmail(apptForm.email);
+
+  /* ── helpers ── */
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!emailForm.name || !emailForm.email || !emailForm.message) return;
-
+    setEmailTouched(true);
+    if (!emailForm.name || !emailForm.email || !emailForm.message || !emailValid) return;
     setEmailSending(true);
-
-    // Save to LocalStorage Message Store
     try {
       const saved = localStorage.getItem("usman_portfolio_messages");
       const existing = saved ? JSON.parse(saved) : [];
-      const newMsg = {
-        id: "msg_" + Date.now(),
-        senderName: emailForm.name,
-        senderEmail: emailForm.email,
-        subject: "Direct Portfolio Inquiry",
-        message: emailForm.message,
-        status: "unread",
-        createdAt: new Date().toISOString(),
-      };
-      localStorage.setItem("usman_portfolio_messages", JSON.stringify([newMsg, ...existing]));
-    } catch {
-      // ignore
-    }
-
-    // Direct Form API submit via FormSubmit
+      localStorage.setItem("usman_portfolio_messages", JSON.stringify([
+        { id: "msg_" + Date.now(), senderName: emailForm.name, senderEmail: emailForm.email,
+          subject: "Direct Portfolio Inquiry", message: emailForm.message,
+          status: "unread", createdAt: new Date().toISOString() },
+        ...existing,
+      ]));
+    } catch { /* ignore */ }
     try {
       await fetch("https://formsubmit.co/ajax/m.usman.shamsi.pak@gmail.com", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name: emailForm.name,
-          email: emailForm.email,
-          message: emailForm.message,
-          _subject: `New Portfolio Message from ${emailForm.name}`,
-          _template: "table",
-          _captcha: "false",
-        }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name: emailForm.name, email: emailForm.email, message: emailForm.message,
+          _subject: `New Portfolio Message from ${emailForm.name}`, _template: "table", _captcha: "false" }),
       });
-    } catch (err) {
-      console.error("Email submission error:", err);
-    }
-
+    } catch { /* ignore */ }
     setEmailSending(false);
     setEmailSubmitted(true);
   };
 
-  // Handle Date Selection for Appointment (Mon-Fri & Blackout check)
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedDateStr = e.target.value;
-    if (!selectedDateStr) {
-      setApptForm((prev) => ({ ...prev, date: "" }));
-      setWeekendError("");
-      return;
+    const val = e.target.value;
+    if (!val) { setApptForm(p => ({ ...p, date: "" })); setWeekendError(""); return; }
+    if (isDateBlackedOut(val)) {
+      setWeekendError("This date is unavailable. Please choose another weekday.");
+      setApptForm(p => ({ ...p, date: "" })); return;
     }
-
-    if (isDateBlackedOut(selectedDateStr)) {
-      setWeekendError("This date is unavailable. Please select another weekday.");
-      setApptForm((prev) => ({ ...prev, date: "" }));
-      return;
-    }
-
-    const dateObj = new Date(selectedDateStr + "T00:00:00");
-    const dayOfWeek = dateObj.getDay();
-
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      setWeekendError("Appointments are available Monday through Friday only. Please select a weekday.");
-      setApptForm((prev) => ({ ...prev, date: "" }));
+    const day = new Date(val + "T00:00:00").getDay();
+    if (day === 0 || day === 6) {
+      setWeekendError("Appointments are available Monday through Friday only.");
+      setApptForm(p => ({ ...p, date: "" }));
     } else {
       setWeekendError("");
-      setApptForm((prev) => ({ ...prev, date: selectedDateStr }));
+      setApptForm(p => ({ ...p, date: val }));
     }
   };
 
-  // Handle Appointment Submit
   const handleApptSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!apptForm.name || !apptForm.email) return;
-
-    if (!apptForm.date) {
-      setWeekendError("Please select a valid weekday date.");
-      return;
-    }
-
+    setApptEmailTouched(true);
+    if (!apptForm.name || !apptForm.email || !apptEmailValid) return;
+    if (!apptForm.date) { setWeekendError("Please select a valid weekday date."); return; }
     setApptSending(true);
-
-    const newAppt = {
-      id: "appt_" + Date.now(),
-      name: apptForm.name,
-      email: apptForm.email,
-      date: apptForm.date,
-      time: apptForm.time,
-      message: apptForm.message,
-      status: "pending" as const,
-      createdAt: new Date().toISOString(),
-    };
-
     try {
       const saved = localStorage.getItem("usman_portfolio_appointments");
       const existing = saved ? JSON.parse(saved) : [];
-      localStorage.setItem("usman_portfolio_appointments", JSON.stringify([newAppt, ...existing]));
-    } catch {
-      // ignore
-    }
-
-    // Send email notification to Usman for Appointment
+      localStorage.setItem("usman_portfolio_appointments", JSON.stringify([
+        { id: "appt_" + Date.now(), ...apptForm, status: "pending", createdAt: new Date().toISOString() },
+        ...existing,
+      ]));
+    } catch { /* ignore */ }
     try {
       await fetch("https://formsubmit.co/ajax/m.usman.shamsi.pak@gmail.com", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          Request_Type: "Appointment Booking",
-          Name: apptForm.name,
-          Email: apptForm.email,
-          Requested_Date: apptForm.date,
-          Requested_Time: apptForm.time,
+          Request_Type: "Appointment Booking", Name: apptForm.name, Email: apptForm.email,
+          Requested_Date: apptForm.date, Requested_Time: apptForm.time,
           Agenda_Notes: apptForm.message || "None provided",
-          _subject: `📅 New Appointment Request: ${apptForm.name} (${apptForm.date} @ ${apptForm.time})`,
-          _template: "table",
-          _captcha: "false",
+          _subject: `📅 New Appointment: ${apptForm.name} (${apptForm.date} @ ${apptForm.time})`,
+          _template: "table", _captcha: "false",
         }),
       });
-    } catch (err) {
-      console.error("Appointment email submission error:", err);
-    }
-
+    } catch { /* ignore */ }
     setApptSending(false);
     setApptSubmitted(true);
   };
 
-  const emailMailtoUrl = `mailto:m.usman.shamsi.pak@gmail.com?subject=${encodeURIComponent(
-    `Portfolio Message from ${emailForm.name || "Visitor"}`
-  )}&body=${encodeURIComponent(
-    `Name: ${emailForm.name}\nEmail: ${emailForm.email}\n\nMessage:\n${emailForm.message}`
-  )}`;
-
-  const apptMailtoUrl = `mailto:m.usman.shamsi.pak@gmail.com?subject=${encodeURIComponent(
-    `Appointment Request: ${apptForm.name || "Visitor"} (${apptForm.date} @ ${apptForm.time})`
-  )}&body=${encodeURIComponent(
-    `Name: ${apptForm.name}\nEmail: ${apptForm.email}\nRequested Date: ${apptForm.date}\nRequested Time: ${apptForm.time}\n\nAgenda:\n${apptForm.message}`
-  )}`;
+  /* ── tab pill position ── */
+  const getPillStyle = () => {
+    const ref = activeTab === "email" ? emailTabRef : apptTabRef;
+    const el = ref.current;
+    if (!el) return { left: "5px", width: "140px" };
+    return { left: el.offsetLeft + "px", width: el.offsetWidth + "px" };
+  };
 
   return (
-    <div className="space-y-12 max-w-5xl mx-auto pb-12">
-      {/* Hero Header */}
-      <motion.div {...fadeUp(0)} className="space-y-4 text-center max-w-2xl mx-auto">
-        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-medium">
-          <Mail size={14} /> Direct Connectivity & Scheduling
-        </span>
-        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Let’s Start a Conversation</h2>
-        <p className="text-sm text-neutral-400">
-          Have a project in mind, a job opportunity, or technical inquiry? Reach out via direct email or schedule a weekday meeting slot.
-        </p>
-      </motion.div>
+    <section id="contact-detail" className="ct2-page">
 
-      {/* Mode Selector Tabs */}
-      <motion.div {...fadeUp(0.1)} className="flex justify-center">
-        <div className="inline-flex p-1.5 rounded-2xl bg-neutral-900 border border-neutral-800">
-          <button
-            onClick={() => setActiveTab("email")}
-            className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-              activeTab === "email" ? "bg-amber-500 text-neutral-950 shadow-md shadow-amber-500/20" : "text-neutral-400 hover:text-white"
-            }`}
-          >
-            <Mail size={16} /> Send Direct Email
-          </button>
-          <button
-            onClick={() => setActiveTab("appointment")}
-            className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-              activeTab === "appointment" ? "bg-amber-500 text-neutral-950 shadow-md shadow-amber-500/20" : "text-neutral-400 hover:text-white"
-            }`}
-          >
-            <Calendar size={16} /> Book Weekday Appointment
-          </button>
-        </div>
-      </motion.div>
+      <div className="ct2-body">
 
-      {/* TAB 1: DIRECT EMAIL FORM */}
-      {activeTab === "email" && (
-        <motion.div {...fadeUp(0.15)} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Quick Info Cards */}
-          <div className="space-y-4">
-            {contactLinks.map((item) => {
-              const Icon = item.icon;
+        {/* ── LEFT: EDITORIAL PANEL ── */}
+        <motion.div className="ct2-left">
+
+          <motion.p {...fadeUp(0)} className="ct2-kicker">
+            07 / Contact · Direct Channels
+          </motion.p>
+
+          <motion.h2 {...fadeUp(0.05)} className="ct2-heading">
+            Get In<span>Touch.</span>
+          </motion.h2>
+
+          <motion.p {...fadeUp(0.1)} className="ct2-tagline">
+            Have a project, opportunity, or just want to talk? Choose your channel — I respond within 24 hours.
+          </motion.p>
+
+          <motion.div {...fadeUp(0.14)} className="ct2-channels">
+            {channels.map((ch) => {
+              const Icon = ch.icon;
               return (
-                <div key={item.label} className="p-5 rounded-2xl bg-neutral-900/70 border border-neutral-800/80 space-y-2">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-neutral-800 text-amber-400">
-                      <Icon size={18} />
-                    </div>
-                    <span className="text-xs font-medium text-neutral-400">{item.label}</span>
+                <a
+                  key={ch.label}
+                  href={ch.href}
+                  download={ch.download}
+                  target={ch.external ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  className="ct2-channel"
+                >
+                  <div className="ct2-channel-icon">
+                    <Icon size={15} />
                   </div>
-                  <div className="text-sm font-semibold text-white font-mono">{item.value}</div>
-                  {item.href && (
-                    <a
-                      href={item.href}
-                      download={item.download}
-                      target={item.external ? "_blank" : "_self"}
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-bold hover:underline pt-1"
-                    >
-                      {item.cta} &rarr;
-                    </a>
-                  )}
-                </div>
+                  <div>
+                    <div className="ct2-channel-label">{ch.label}</div>
+                    <div className="ct2-channel-value">{ch.value}</div>
+                  </div>
+                </a>
               );
             })}
-          </div>
+          </motion.div>
 
-          {/* Form Container */}
-          <div className="lg:col-span-2 p-6 md:p-8 rounded-2xl bg-neutral-900/80 border border-neutral-800 shadow-xl">
-            {emailSubmitted ? (
-              <div className="py-12 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
-                  <CheckCircle2 size={32} />
-                </div>
-                <h3 className="text-xl font-bold text-white">Message Dispatched!</h3>
-                <p className="text-xs text-neutral-400 max-w-sm mx-auto">
-                  Your message has been sent directly to <span className="text-amber-400 font-mono">m.usman.shamsi.pak@gmail.com</span>. I will get back to you shortly!
-                </p>
-                <div className="flex flex-wrap gap-3 justify-center pt-2">
-                  <a
-                    href={emailMailtoUrl}
-                    className="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
-                  >
-                    <Mail size={14} /> Open in Email App
-                  </a>
-                  <button
-                    onClick={() => setEmailSubmitted(false)}
-                    className="px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-white transition-colors"
-                  >
-                    Send Another Message
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleEmailSubmit} className="space-y-4">
-                <h3 className="text-lg font-bold text-white mb-4">Send a Direct Message</h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block mb-1 text-xs font-semibold text-neutral-300">Your Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={emailForm.name}
-                      onChange={(e) => setEmailForm({ ...emailForm, name: e.target.value })}
-                      placeholder="Enter your full name..."
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500/70"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-xs font-semibold text-neutral-300">Your Email *</label>
-                    <input
-                      type="email"
-                      required
-                      value={emailForm.email}
-                      onChange={(e) => setEmailForm({ ...emailForm, email: e.target.value })}
-                      placeholder="Enter your email address..."
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white font-mono placeholder-neutral-500 focus:outline-none focus:border-amber-500/70"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block mb-1 text-xs font-semibold text-neutral-300">Message *</label>
-                  <textarea
-                    rows={5}
-                    required
-                    value={emailForm.message}
-                    onChange={(e) => setEmailForm({ ...emailForm, message: e.target.value })}
-                    placeholder="Type your message here..."
-                    className="w-full p-4 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500/70"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={emailSending}
-                  className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20 active:scale-[0.99] disabled:opacity-50"
-                >
-                  {emailSending ? "Dispatching Message..." : "Send Direct Message"}
-                </button>
-              </form>
-            )}
-          </div>
+          <motion.div {...fadeUp(0.2)} className="ct2-location">
+            <span className="ct2-location-dot" />
+            <MapPin size={11} />
+            Karachi, Pakistan · Open to Remote
+          </motion.div>
         </motion.div>
-      )}
 
-      {/* TAB 2: APPOINTMENT BOOKING FORM */}
-      {activeTab === "appointment" && (
-        <motion.div {...fadeUp(0.15)} className="max-w-2xl mx-auto p-6 md:p-8 rounded-2xl bg-neutral-900/80 border border-neutral-800 shadow-xl">
-          {apptSubmitted ? (
-            <div className="py-12 text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
-                <CheckCircle2 size={32} />
-              </div>
-              <h3 className="text-xl font-bold text-white">Appointment Request Submitted!</h3>
-              <p className="text-xs text-neutral-400 max-w-md mx-auto">
-                Your consultation request for <span className="text-amber-400 font-bold">{apptForm.date}</span> at{" "}
-                <span className="text-amber-400 font-bold">{apptForm.time}</span> has been received.
-              </p>
-              <div className="flex flex-wrap gap-3 justify-center pt-2">
-                <a
-                  href={apptMailtoUrl}
-                  className="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
-                >
-                  <Mail size={14} /> Open in Email App
-                </a>
-                <button
-                  onClick={() => setApptSubmitted(false)}
-                  className="px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-white transition-colors"
-                >
-                  Book Another Slot
-                </button>
-              </div>
-            </div>
-          ) : (
-            <form onSubmit={handleApptSubmit} className="space-y-5">
-              <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
-                <h3 className="text-lg font-bold text-white">Schedule Weekday Consultation</h3>
-                <span className="text-xs text-neutral-400 font-mono">Mon–Fri Only • PKT</span>
-              </div>
+        {/* ── RIGHT: FORM PANEL ── */}
+        <motion.div {...fadeUp(0.08)} className="ct2-right">
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-1 text-xs font-semibold text-neutral-300">Your Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={apptForm.name}
-                    onChange={(e) => setApptForm({ ...apptForm, name: e.target.value })}
-                    placeholder="Enter your full name..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500/70"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 text-xs font-semibold text-neutral-300">Your Email *</label>
-                  <input
-                    type="email"
-                    required
-                    value={apptForm.email}
-                    onChange={(e) => setApptForm({ ...apptForm, email: e.target.value })}
-                    placeholder="Enter your email address..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white font-mono placeholder-neutral-500 focus:outline-none focus:border-amber-500/70"
-                  />
-                </div>
-              </div>
+          {/* Tab Switcher */}
+          <div className="ct2-tabs" id="ct2-tabs-container">
+            <div className="ct2-tab-pill" style={getPillStyle()} />
+            <button
+              ref={emailTabRef}
+              className={`ct2-tab-btn ${activeTab === "email" ? "active" : ""}`}
+              onClick={() => setActiveTab("email")}
+            >
+              <Mail size={13} /> Send Message
+            </button>
+            <button
+              ref={apptTabRef}
+              className={`ct2-tab-btn ${activeTab === "appointment" ? "active" : ""}`}
+              onClick={() => setActiveTab("appointment")}
+            >
+              <Calendar size={13} /> Book Appointment
+            </button>
+          </div>
 
-              {/* Date Picker */}
-              <div>
-                <label className="block mb-1 text-xs font-semibold text-neutral-300">Select Date (Weekday Only) *</label>
-                <input
-                  type="date"
-                  required
-                  min={new Date().toISOString().split("T")[0]}
-                  onChange={handleDateChange}
-                  className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white focus:outline-none focus:border-amber-500/70"
-                />
-                {weekendError && (
-                  <p className="mt-1.5 text-xs text-rose-400 flex items-center gap-1">
-                    <AlertCircle size={14} /> {weekendError}
-                  </p>
-                )}
-              </div>
-
-              {/* Time Slots */}
-              <div>
-                <label className="block mb-2 text-xs font-semibold text-neutral-300">Select Time Slot (PKT) *</label>
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
-                  {timeSlots.map((slot) => {
-                    const isDisabled = apptForm.date ? isSlotDisabled(apptForm.date, slot) : false;
-                    return (
-                      <button
-                        type="button"
-                        key={slot}
-                        disabled={isDisabled}
-                        onClick={() => setApptForm({ ...apptForm, time: slot })}
-                        className={`py-2 px-3 rounded-xl text-xs font-mono font-semibold transition-all border ${
-                          apptForm.time === slot
-                            ? "bg-amber-500 text-neutral-950 border-amber-400 shadow-md shadow-amber-500/20"
-                            : isDisabled
-                            ? "bg-neutral-950 text-neutral-600 border-neutral-900 cursor-not-allowed line-through"
-                            : "bg-neutral-950 text-neutral-300 border-neutral-800 hover:border-neutral-700"
-                        }`}
-                      >
-                        {slot}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Notes */}
-              <div>
-                <label className="block mb-1 text-xs font-semibold text-neutral-300">Agenda / Meeting Topic</label>
-                <textarea
-                  rows={3}
-                  value={apptForm.message}
-                  onChange={(e) => setApptForm({ ...apptForm, message: e.target.value })}
-                  placeholder="Briefly state the goal for our call..."
-                  className="w-full p-3 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500/70"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={apptSending}
-                className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20 active:scale-[0.99] disabled:opacity-50"
+          {/* Form Card */}
+          <AnimatePresence mode="wait">
+            {activeTab === "email" ? (
+              <motion.div
+                key="email-card"
+                className="ct2-form-card"
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
               >
-                {apptSending ? "Submitting Request..." : "Submit Appointment Request"}
-              </button>
-            </form>
-          )}
+                {emailSubmitted ? (
+                  <div className="ct2-success">
+                    <motion.div
+                      className="ct2-success-icon"
+                      style={{ background: "rgba(46,213,115,0.08)", border: "1px solid rgba(46,213,115,0.22)", color: "#2ed573" }}
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    >
+                      <CheckCircle2 size={34} />
+                    </motion.div>
+                    <h3 className="ct2-success-title">Message Dispatched</h3>
+                    <p className="ct2-success-sub">
+                      Your message has been sent to{" "}
+                      <strong style={{ color: "var(--champagne)" }}>m.usman.shamsi.pak@gmail.com</strong>. I'll be in touch shortly.
+                    </p>
+                    <button className="ct2-success-action" onClick={() => setEmailSubmitted(false)}>
+                      Send Another
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleEmailSubmit} className="ct2-form-inner">
+                    <h3 className="ct2-form-title">Send a Direct Message</h3>
+                    <div className="ct2-row">
+                      <div className="ct2-field">
+                        <label className="ct2-label">Your Name *</label>
+                        <input className="ct2-input" type="text" required placeholder="Muhammad Ali"
+                          value={emailForm.name} onChange={e => setEmailForm({ ...emailForm, name: e.target.value })} />
+                      </div>
+                      <div className="ct2-field">
+                        <label className="ct2-label" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          Your Email *
+                          {emailTouched && emailForm.email && (
+                            emailValid
+                              ? <CheckCircle2 size={11} style={{ color: "#2ed573" }} />
+                              : <XCircle      size={11} style={{ color: "#fb7185" }} />
+                          )}
+                        </label>
+                        <input
+                          className="ct2-input"
+                          type="email"
+                          required
+                          placeholder="you@example.com"
+                          value={emailForm.email}
+                          onChange={e => setEmailForm({ ...emailForm, email: e.target.value })}
+                          onBlur={() => setEmailTouched(true)}
+                          style={emailTouched && emailForm.email
+                            ? { borderColor: emailValid ? "rgba(46,213,115,0.45)" : "rgba(251,113,133,0.55)" }
+                            : {}}
+                        />
+                        {emailTouched && emailForm.email && !emailValid && (
+                          <p className="ct2-error" style={{ marginTop: 4 }}>
+                            <AlertCircle size={12} /> Please enter a valid email address (e.g. name@domain.com)
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="ct2-field">
+                      <label className="ct2-label">Message *</label>
+                      <textarea className="ct2-textarea" rows={5} required
+                        placeholder="Tell me about your project, opportunity, or idea..."
+                        value={emailForm.message} onChange={e => setEmailForm({ ...emailForm, message: e.target.value })} />
+                    </div>
+                    <button type="submit" className="ct2-submit" disabled={emailSending}>
+                      <Send size={15} />
+                      {emailSending ? "Sending..." : "Send Message"}
+                    </button>
+                  </form>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="appt-card"
+                className="ct2-form-card"
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {apptSubmitted ? (
+                  <div className="ct2-success">
+                    <motion.div
+                      className="ct2-success-icon"
+                      style={{ background: "rgba(214,178,111,0.08)", border: "1px solid rgba(214,178,111,0.22)", color: "var(--champagne)" }}
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    >
+                      <CheckCircle2 size={34} />
+                    </motion.div>
+                    <h3 className="ct2-success-title">Request Received</h3>
+                    <p className="ct2-success-sub">
+                      Your slot for{" "}
+                      <strong style={{ color: "var(--champagne)" }}>{apptForm.date} @ {apptForm.time}</strong>{" "}
+                      has been submitted. I'll confirm shortly.
+                    </p>
+                    <button className="ct2-success-action" onClick={() => setApptSubmitted(false)}>
+                      Book Another Slot
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleApptSubmit} className="ct2-form-inner">
+                    <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+                      <h3 className="ct2-form-title">Schedule a Consultation</h3>
+                      <span className="ct2-form-meta">Mon–Fri · PKT</span>
+                    </div>
+
+                    <div className="ct2-row">
+                      <div className="ct2-field">
+                        <label className="ct2-label">Your Name *</label>
+                        <input className="ct2-input" type="text" required placeholder="Muhammad Ali"
+                          value={apptForm.name} onChange={e => setApptForm({ ...apptForm, name: e.target.value })} />
+                      </div>
+                      <div className="ct2-field">
+                        <label className="ct2-label" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          Your Email *
+                          {apptEmailTouched && apptForm.email && (
+                            apptEmailValid
+                              ? <CheckCircle2 size={11} style={{ color: "#2ed573" }} />
+                              : <XCircle      size={11} style={{ color: "#fb7185" }} />
+                          )}
+                        </label>
+                        <input
+                          className="ct2-input"
+                          type="email"
+                          required
+                          placeholder="you@example.com"
+                          value={apptForm.email}
+                          onChange={e => setApptForm({ ...apptForm, email: e.target.value })}
+                          onBlur={() => setApptEmailTouched(true)}
+                          style={apptEmailTouched && apptForm.email
+                            ? { borderColor: apptEmailValid ? "rgba(46,213,115,0.45)" : "rgba(251,113,133,0.55)" }
+                            : {}}
+                        />
+                        {apptEmailTouched && apptForm.email && !apptEmailValid && (
+                          <p className="ct2-error" style={{ marginTop: 4 }}>
+                            <AlertCircle size={12} /> Please enter a valid email address (e.g. name@domain.com)
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="ct2-field">
+                      <label className="ct2-label">Select Date (Weekdays Only) *</label>
+                      <input className="ct2-date" type="date" required
+                        min={new Date().toISOString().split("T")[0]} onChange={handleDateChange} />
+                      {weekendError && (
+                        <p className="ct2-error"><AlertCircle size={13} /> {weekendError}</p>
+                      )}
+                    </div>
+
+                    <div className="ct2-field">
+                      <label className="ct2-label">Time Slot (PKT) *</label>
+                      <div className="ct2-slots">
+                        {timeSlots.map(slot => {
+                          const isDisabled = apptForm.date ? isSlotDisabled(apptForm.date, slot) : false;
+                          return (
+                            <button
+                              type="button" key={slot} disabled={isDisabled}
+                              className={`ct2-slot${apptForm.time === slot ? " active" : ""}`}
+                              onClick={() => setApptForm({ ...apptForm, time: slot })}
+                            >
+                              {slot}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="ct2-field">
+                      <label className="ct2-label">Agenda / Topic</label>
+                      <textarea className="ct2-textarea" rows={3}
+                        placeholder="Briefly describe what you'd like to discuss..."
+                        value={apptForm.message} onChange={e => setApptForm({ ...apptForm, message: e.target.value })} />
+                    </div>
+
+                    <button type="submit" className="ct2-submit" disabled={apptSending}>
+                      <Calendar size={15} />
+                      {apptSending ? "Submitting..." : "Confirm Appointment Request"}
+                    </button>
+                  </form>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
-      )}
-    </div>
+      </div>
+
+      <p className="ct2-footnote">
+        Typically responds within 24 hours · Karachi, Pakistan (PKT, UTC+5)
+      </p>
+    </section>
   );
 }
