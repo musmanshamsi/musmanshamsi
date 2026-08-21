@@ -1,5 +1,5 @@
 /* =========================================================
-   HELLO LOADER — YELLOWTAIL CONTINUOUS SINGLE-STROKE SPLASH
+   HELLO LOADER — HIGH-PERFORMANCE MOBILE-OPTIMIZED SPLASH
 ========================================================= */
 
 .hello-loader-overlay {
@@ -12,56 +12,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 16px;
   overflow: hidden;
   user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  /* Hardware acceleration for buttery 60/120fps on mobile */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-/* ── 3 DRIFTING AMBIENT GRADIENT BLOBS ── */
+/* ── MOBILE-OPTIMIZED AMBIENT BACKDROP (Zero live blur lag) ── */
+/* Using native CSS radial gradient color-stops instead of heavy filter: blur() */
 .hello-orbs-container {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
-}
-
-.hello-orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0.35;
-  filter: blur(85px);
-}
-
-/* Teal #2dd4bf */
-.hello-orb--teal {
-  width: min(460px, 60vw);
-  height: min(460px, 60vw);
-  background: radial-gradient(circle, #2dd4bf 0%, rgba(45, 212, 191, 0) 70%);
-  top: 18%;
-  left: 20%;
-}
-
-/* Gold #d4af37 */
-.hello-orb--gold {
-  width: min(520px, 70vw);
-  height: min(520px, 70vw);
-  background: radial-gradient(circle, #d4af37 0%, rgba(212, 175, 55, 0) 70%);
-  bottom: 22%;
-  right: 20%;
-  opacity: 0.42;
-}
-
-/* Blue #3b82f6 */
-.hello-orb--blue {
-  width: min(420px, 55vw);
-  height: min(420px, 55vw);
-  background: radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0) 70%);
-  top: 52%;
-  left: 36%;
-  opacity: 0.32;
+  /* Multi-color ambient glow in a single composite layer */
+  background:
+    radial-gradient(circle 280px at 30% 35%, rgba(45, 212, 191, 0.12) 0%, transparent 70%),
+    radial-gradient(circle 320px at 70% 65%, rgba(212, 175, 55, 0.16) 0%, transparent 70%),
+    radial-gradient(circle 260px at 50% 50%, rgba(59, 130, 246, 0.10) 0%, transparent 70%);
+  contain: strict;
 }
 
 /* ── CENTRAL SVG CONTAINER ── */
@@ -73,24 +49,34 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-width: 620px;
   width: 100%;
+  max-width: 540px;
+  contain: layout style;
 }
 
 .hello-svg-container {
   position: relative;
-  width: min(540px, 88vw);
+  width: min(480px, 90vw);
   height: auto;
-  aspect-ratio: 560 / 200;
+  aspect-ratio: 560 / 190;
   display: grid;
   place-items: center;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
 }
 
 .hello-svg {
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 4px 28px rgba(214, 178, 111, 0.42));
+  /* Lightweight GPU-composited shadow instead of expensive filter */
+  filter: drop-shadow(0 2px 16px rgba(214, 178, 111, 0.35));
+  -webkit-filter: drop-shadow(0 2px 16px rgba(214, 178, 111, 0.35));
+}
+
+.hello-stroke-path {
+  will-change: stroke-dashoffset;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Screen reader text */
