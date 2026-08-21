@@ -1,8 +1,6 @@
 /* =========================================================
-   HELLO LOADER — NATURAL HANDWRITTEN SPLASH SCREEN
+   HELLO LOADER — YELLOWTAIL CONTINUOUS SINGLE-STROKE SPLASH
 ========================================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kalam:wght@700&family=Shadows+Into+Light&family=Indie+Flower&display=swap');
 
 .hello-loader-overlay {
   position: fixed;
@@ -66,7 +64,7 @@
   opacity: 0.32;
 }
 
-/* ── CENTRAL CONTENT CONTAINER ── */
+/* ── CENTRAL SVG CONTAINER ── */
 .hello-content-wrap {
   position: relative;
   z-index: 1;
@@ -75,21 +73,24 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-width: 600px;
+  max-width: 620px;
   width: 100%;
 }
 
-/* Natural Upright Handwritten Hello */
-.hello-handwritten-text {
-  margin: 0;
-  font-family: "Caveat", "Kalam", "Shadows Into Light", "Indie Flower", cursive, sans-serif;
-  font-size: clamp(80px, 16vw, 150px);
-  font-weight: 700;
-  font-style: normal; /* Upright, not italic */
-  line-height: 1;
-  letter-spacing: 0.02em;
-  color: #f6e0ad;
-  text-shadow: 0 4px 36px rgba(214, 178, 111, 0.4), 0 0 60px rgba(214, 178, 111, 0.2);
+.hello-svg-container {
+  position: relative;
+  width: min(540px, 88vw);
+  height: auto;
+  aspect-ratio: 560 / 200;
+  display: grid;
+  place-items: center;
+}
+
+.hello-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 28px rgba(214, 178, 111, 0.42));
 }
 
 /* Screen reader text */
