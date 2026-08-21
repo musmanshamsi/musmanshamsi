@@ -1,0 +1,106 @@
+/* =========================================================
+   HELLO LOADER — NATURAL HANDWRITTEN SPLASH SCREEN
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kalam:wght@700&family=Shadows+Into+Light&family=Indie+Flower&display=swap');
+
+.hello-loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: #070707;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── 3 DRIFTING AMBIENT GRADIENT BLOBS ── */
+.hello-orbs-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hello-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  filter: blur(85px);
+}
+
+/* Teal #2dd4bf */
+.hello-orb--teal {
+  width: min(460px, 60vw);
+  height: min(460px, 60vw);
+  background: radial-gradient(circle, #2dd4bf 0%, rgba(45, 212, 191, 0) 70%);
+  top: 18%;
+  left: 20%;
+}
+
+/* Gold #d4af37 */
+.hello-orb--gold {
+  width: min(520px, 70vw);
+  height: min(520px, 70vw);
+  background: radial-gradient(circle, #d4af37 0%, rgba(212, 175, 55, 0) 70%);
+  bottom: 22%;
+  right: 20%;
+  opacity: 0.42;
+}
+
+/* Blue #3b82f6 */
+.hello-orb--blue {
+  width: min(420px, 55vw);
+  height: min(420px, 55vw);
+  background: radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0) 70%);
+  top: 52%;
+  left: 36%;
+  opacity: 0.32;
+}
+
+/* ── CENTRAL CONTENT CONTAINER ── */
+.hello-content-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Natural Upright Handwritten Hello */
+.hello-handwritten-text {
+  margin: 0;
+  font-family: "Caveat", "Kalam", "Shadows Into Light", "Indie Flower", cursive, sans-serif;
+  font-size: clamp(80px, 16vw, 150px);
+  font-weight: 700;
+  font-style: normal; /* Upright, not italic */
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #f6e0ad;
+  text-shadow: 0 4px 36px rgba(214, 178, 111, 0.4), 0 0 60px rgba(214, 178, 111, 0.2);
+}
+
+/* Screen reader text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

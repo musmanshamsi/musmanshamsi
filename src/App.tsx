@@ -18,6 +18,7 @@ import ContactDetail from "./components/sections/ContactDetail";
 
 import { SiteSettingsProvider } from "./context/SiteSettingsContext";
 import SecurityGuard from "./components/common/SecurityGuard";
+import HelloLoader from "./components/common/HelloLoader";
 
 function getInitialPageIndex(): number {
   const hash = window.location.hash.replace(/^#/, "").toLowerCase();
@@ -88,8 +89,6 @@ function MainAppContent() {
   const goPrev = () => {
     setActiveIndex((current) => (current - 1 + pages.length) % pages.length);
   };
-
-
 
   const renderDetailContent = () => {
     if (activePage.id === "overview") return <OverviewDetail onViewProject={() => scrollToDetail(1)} />;
@@ -185,10 +184,52 @@ function MainAppContent() {
   );
 }
 
+function isHelloAlreadySeen(): boolean {
+  // Always play in DEV mode or when #hello is in URL for testing
+  if (import.meta.env.DEV || window.location.hash.toLowerCase() === "#hello") {
+    return false;
+  }
+  try {
+    return sessionStorage.getItem("hello-shown") === "true";
+  } catch {
+    return false;
+  }
+}
+
 export default function App() {
+  const [isLoaded, setIsLoaded] = useState(isHelloAlreadySeen);
+
+  // Listen for #hello hash changes to replay on demand
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash.toLowerCase() === "#hello") {
+        try {
+          sessionStorage.removeItem("hello-shown");
+        } catch {
+          // ignore
+        }
+        setIsLoaded(false);
+      }
+    };
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
+
+  const handleHelloComplete = () => {
+    setIsLoaded(true);
+    if (window.location.hash.toLowerCase() === "#hello") {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  };
+
   return (
     <SecurityGuard>
       <SiteSettingsProvider>
+        <AnimatePresence>
+          {!isLoaded && (
+            <HelloLoader onComplete={handleHelloComplete} />
+          )}
+        </AnimatePresence>
         <MainAppContent />
       </SiteSettingsProvider>
     </SecurityGuard>
