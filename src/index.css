@@ -4825,53 +4825,181 @@ a:focus-visible {
    REELS
 ============================================================ */
 
-/* Platform CTA buttons */
+/* Platform CTA & Filter buttons */
 .cre2-reels-ctas {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
   flex-wrap: wrap;
   align-self: flex-end;
   padding-bottom: 4px;
 }
 
+/* Reels Side Navigation Arrows (Left & Right of Grid) */
+.cre2-reels-wrapper {
+  position: relative;
+}
+
+.cre2-reels-side-btn {
+  position: absolute;
+  top: calc(50% - 10px);
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(18, 18, 18, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    color 0.22s ease;
+}
+
+.cre2-reels-side-btn--left {
+  left: 12px;
+}
+
+.cre2-reels-side-btn--right {
+  right: 12px;
+}
+
+.cre2-reels-side-btn:hover {
+  background: rgba(26, 20, 10, 0.95);
+  border-color: var(--champagne);
+  color: var(--champagne);
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 10px 36px rgba(214, 178, 111, 0.38);
+}
+
+.cre2-reels-side-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .cre2-reels-side-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .cre2-reels-side-btn--left { left: 6px; }
+  .cre2-reels-side-btn--right { right: 6px; }
+}
+
 .cre2-platform-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 7px;
-  padding: 9px 18px;
+  height: 38px;
+  padding: 0 16px;
   border-radius: 99px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.02em;
   text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  outline: none;
+  white-space: nowrap;
   transition:
     opacity 0.2s ease,
-    translate 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    filter 0.2s ease;
 }
 
 .cre2-platform-btn:hover {
-  opacity: 0.88;
-  translate: 0 -2px;
+  opacity: 0.95;
+  transform: translateY(-2px);
 }
 
+.cre2-platform-btn:active {
+  transform: translateY(0);
+}
+
+/* All Button */
+.cre2-platform-btn--all {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cre2-platform-btn--all:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.cre2-platform-btn--all.is-active {
+  background: var(--champagne);
+  border-color: var(--champagne);
+  color: #111;
+  box-shadow: 0 4px 22px rgba(214, 178, 111, 0.35);
+  font-weight: 800;
+}
+
+/* Instagram */
 .cre2-platform-btn--ig {
   background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   color: white;
-  box-shadow: 0 4px 20px rgba(220,39,67,0.3);
+  box-shadow: 0 4px 20px rgba(220, 39, 67, 0.28);
 }
 
 .cre2-platform-btn--ig:hover {
-  box-shadow: 0 6px 28px rgba(220,39,67,0.48);
+  box-shadow: 0 6px 28px rgba(220, 39, 67, 0.48);
 }
 
+/* YouTube */
 .cre2-platform-btn--yt {
   background: #ff0000;
   color: white;
-  box-shadow: 0 4px 20px rgba(255,0,0,0.25);
+  box-shadow: 0 4px 20px rgba(255, 0, 0, 0.25);
 }
 
+.cre2-platform-btn--yt:hover {
+  box-shadow: 0 6px 28px rgba(255, 0, 0, 0.45);
+}
+
+/* Facebook */
+.cre2-platform-btn--fb {
+  background: #1877f2;
+  color: white;
+  box-shadow: 0 4px 20px rgba(24, 119, 242, 0.28);
+}
+
+.cre2-platform-btn--fb:hover {
+  box-shadow: 0 6px 28px rgba(24, 119, 242, 0.48);
+}
+
+/* Active Highlight Ring for Specific Platforms */
+.cre2-platform-btn:not(.cre2-platform-btn--all).is-active {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95), 0 8px 30px rgba(214, 178, 111, 0.4);
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+}
+
+/* Dimmed non-active state when a platform is selected */
+.cre2-platform-btn.is-dimmed {
+  opacity: 0.42;
+  filter: grayscale(0.25);
+}
+
+.cre2-platform-btn.is-dimmed:hover {
+  opacity: 0.88;
+  filter: none;
+}
 
 /* Category Filter Bar */
 .cre2-filter-bar {
@@ -5160,6 +5288,17 @@ a:focus-visible {
   line-height: 1.25;
 }
 
+.cre2-reel-desc {
+  margin: 2px 0 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.62);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .cre2-reel-open {
   display: inline-flex;
   align-items: center;
@@ -5174,12 +5313,49 @@ a:focus-visible {
   color: rgba(255,255,255,0.82);
 }
 
+/* Scroll progress bottom navigation */
+.cre2-reel-bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.cre2-reel-nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.22s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.cre2-reel-nav-btn:hover {
+  background: rgba(214, 178, 111, 0.14);
+  border-color: rgba(214, 178, 111, 0.5);
+  color: var(--champagne);
+  box-shadow: 0 4px 16px rgba(214, 178, 111, 0.22);
+  transform: scale(1.1);
+}
+
+.cre2-reel-nav-btn:active {
+  transform: scale(0.92);
+}
+
 /* Scroll progress dots */
 .cre2-reel-dots {
   display: flex;
+  align-items: center;
   justify-content: center;
   gap: 7px;
-  margin-top: 22px;
+  margin-top: 0;
 }
 
 .cre2-reel-dot {

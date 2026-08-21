@@ -101,6 +101,7 @@ const reelItems: {
   platform: Platform;
   url: string;
   category: string;
+  desc?: string;
   badge?: string;      // optional override for the platform badge text
   openLabel?: string;  // optional override for the "Open ..." CTA text
 }[] = [
@@ -111,6 +112,18 @@ const reelItems: {
     platform: "instagram",
     url: "https://www.instagram.com/m.usmanshamsi/",
     category: "Comedy & Stand-Up",
+  },
+  {
+    // Real video — Mecca Pact 2026 (Turkish Voiceover, 2nd Position in university)
+    id: "r-mecca",
+    title: "Mecca Pact 2026",
+    label: "Turkish Voiceover · 2026",
+    platform: "youtube",
+    url: "https://youtube.com/shorts/5Ly4Bcb2-wA?si=4UDjTL5JTkUIXIIh",
+    category: "Poetry & Voiceover",
+    badge: "2nd Place",
+    openLabel: "Watch Short",
+    desc: "Helped Media and Science students complete their reel with Turkish voiceover narration, securing 2nd position in the university.",
   },
   {
     // Real video — landscape vlog, first solo trip to Islamabad 2025
@@ -211,7 +224,12 @@ const fadeUp = (delay = 0) => ({
   },
 });
 
-// ── Platform SVG icons ────────────────────────────────────────────────────────
+const AllIcon = () => (
+  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
+    <path d="M3 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4zm10 0a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V4zm-10 10a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6zm10 0a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-6z" />
+  </svg>
+);
+
 const IgIcon = () => (
   <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
@@ -448,10 +466,13 @@ function CreativeReels() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [activePlatform, setActivePlatform] = useState<Platform | "all">("all");
 
-  const filteredReels = activeCategory === "All"
-    ? reelItems
-    : reelItems.filter((item) => item.category === activeCategory);
+  const filteredReels = reelItems.filter((item) => {
+    const matchesPlatform = activePlatform === "all" || item.platform === activePlatform;
+    const matchesCategory = activeCategory === "All" || item.category === activeCategory;
+    return matchesPlatform && matchesCategory;
+  });
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -472,7 +493,20 @@ function CreativeReels() {
 
     items.forEach((item) => io.observe(item));
     return () => io.disconnect();
-  }, [activeCategory]);
+  }, [activeCategory, activePlatform]);
+
+  const handlePlatformToggle = (platform: Platform | "all") => {
+    setActivePlatform(platform);
+    setActiveIdx(0);
+    scrollRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+  };
+
+  const scrollReels = (dir: "left" | "right") => {
+    scrollRef.current?.scrollBy({
+      left: dir === "right" ? 240 : -240,
+      behavior: "smooth",
+    });
+  };
 
   const handleCategoryChange = (cat: string) => {
     setActiveCategory(cat);
@@ -504,39 +538,70 @@ function CreativeReels() {
             Reels &amp; Videos
           </div>
           <h3 className="cre2-section-title">Short-Form Stories</h3>
-          <p className="cre2-section-desc">Instagram Reels and YouTube videos — all in one scroll.</p>
+          <p className="cre2-section-desc">Filter reels and videos by platform or browse all in one scroll.</p>
         </div>
-        {/* Platform CTA buttons */}
-        <div className="cre2-reels-ctas">
-          <a
-            href="https://www.instagram.com/m.usmanshamsi/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cre2-platform-btn cre2-platform-btn--ig"
-            aria-label="View profile on Instagram"
+
+        {/* Interactive Platform Filter Buttons */}
+        <div className="cre2-reels-ctas" role="group" aria-label="Filter videos by platform">
+          <button
+            type="button"
+            className={`cre2-platform-btn cre2-platform-btn--all ${
+              activePlatform === "all" ? "is-active" : ""
+            }`}
+            onClick={() => handlePlatformToggle("all")}
+            aria-pressed={activePlatform === "all"}
+            aria-label="Show all videos"
+          >
+            <AllIcon />
+            All
+          </button>
+          <button
+            type="button"
+            className={`cre2-platform-btn cre2-platform-btn--ig ${
+              activePlatform === "instagram" ? "is-active" : activePlatform !== "all" ? "is-dimmed" : ""
+            }`}
+            onClick={() => handlePlatformToggle(activePlatform === "instagram" ? "all" : "instagram")}
+            aria-pressed={activePlatform === "instagram"}
+            aria-label="Filter to Instagram Reels"
           >
             <IgIcon />
             Instagram
-          </a>
-          <a
-            href="https://www.youtube.com/@musmanshamsi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cre2-platform-btn cre2-platform-btn--yt"
-            aria-label="View channel on YouTube"
+          </button>
+          <button
+            type="button"
+            className={`cre2-platform-btn cre2-platform-btn--yt ${
+              activePlatform === "youtube" ? "is-active" : activePlatform !== "all" ? "is-dimmed" : ""
+            }`}
+            onClick={() => handlePlatformToggle(activePlatform === "youtube" ? "all" : "youtube")}
+            aria-pressed={activePlatform === "youtube"}
+            aria-label="Filter to YouTube Videos & Shorts"
           >
             <YtIcon />
             YouTube
-          </a>
+          </button>
+          <button
+            type="button"
+            className={`cre2-platform-btn cre2-platform-btn--fb ${
+              activePlatform === "facebook" ? "is-active" : activePlatform !== "all" ? "is-dimmed" : ""
+            }`}
+            onClick={() => handlePlatformToggle(activePlatform === "facebook" ? "all" : "facebook")}
+            aria-pressed={activePlatform === "facebook"}
+            aria-label="Filter to Facebook Videos"
+          >
+            <FbIcon />
+            Facebook
+          </button>
         </div>
       </div>
 
       {/* Category Filter Bar */}
       <div className="cre2-filter-bar" role="tablist" aria-label="Filter videos by category">
         {categories.map((cat) => {
-          const count = cat === "All"
-            ? reelItems.length
-            : reelItems.filter((r) => r.category === cat).length;
+          const count = reelItems.filter((r) => {
+            const matchesPlatform = activePlatform === "all" || r.platform === activePlatform;
+            const matchesCategory = cat === "All" || r.category === cat;
+            return matchesPlatform && matchesCategory;
+          }).length;
           const isActive = activeCategory === cat;
           return (
             <button
@@ -556,67 +621,108 @@ function CreativeReels() {
 
       {/* Scroll container */}
       <div className="cre2-gallery-wrapper">
-        <div
-          className="cre2-reels-scroll"
-          ref={scrollRef}
-          role="region"
-          aria-label="Creative reels and videos — scroll to browse"
-        >
-          {filteredReels.map((reel, i) => (
-            <motion.a
-              key={reel.id}
-              {...fadeUp(0.18 + i * 0.07)}
-              href={reel.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cre2-reel-card"
-              data-platform={reel.platform}
-              aria-label={`Watch "${reel.title}" on ${reel.platform === "instagram" ? "Instagram" : reel.platform === "youtube" ? "YouTube" : "Facebook"} — opens in new tab`}
+        {filteredReels.length === 0 ? (
+          <div className="cre2-reels-empty">
+            <p>No {activePlatform !== "all" ? `${activePlatform}` : ""} videos found under "{activeCategory}".</p>
+            <button
+              type="button"
+              className="cre2-filter-pill is-active"
+              onClick={() => {
+                setActivePlatform("all");
+                setActiveCategory("All");
+                setActiveIdx(0);
+                scrollRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+              }}
             >
-              {/* Platform badge */}
-              <div className={`cre2-reel-badge cre2-reel-badge--${reel.platform}`}>
-                <PlatformIcon platform={reel.platform} />
-                <span>{reel.badge ?? (reel.platform === "instagram" ? "Reel" : reel.platform === "youtube" ? "Video" : "Facebook")}</span>
-              </div>
-
-              {/* Cinematic gradient background */}
-              <div className="cre2-reel-bg" aria-hidden="true" />
-
-              {/* Centered play button + pulse ring */}
-              <div className="cre2-reel-play" aria-hidden="true">
-                <div className="cre2-reel-play-ring" />
-                <div className="cre2-reel-play-btn">
-                  <Play size={22} fill="white" color="white" strokeWidth={0} />
+              Show All Videos
+            </button>
+          </div>
+        ) : (
+          <div
+            className="cre2-reels-scroll"
+            ref={scrollRef}
+            role="region"
+            aria-label="Creative reels and videos — scroll to browse"
+          >
+            {filteredReels.map((reel, i) => (
+              <motion.a
+                key={reel.id}
+                {...fadeUp(0.18 + i * 0.07)}
+                href={reel.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cre2-reel-card"
+                data-platform={reel.platform}
+                aria-label={`Watch "${reel.title}" on ${reel.platform === "instagram" ? "Instagram" : reel.platform === "youtube" ? "YouTube" : "Facebook"} — opens in new tab`}
+              >
+                {/* Platform badge */}
+                <div className={`cre2-reel-badge cre2-reel-badge--${reel.platform}`}>
+                  <PlatformIcon platform={reel.platform} />
+                  <span>{reel.badge ?? (reel.platform === "instagram" ? "Reel" : reel.platform === "youtube" ? "Video" : "Facebook")}</span>
                 </div>
-              </div>
 
-              {/* Info — anchored to bottom */}
-              <div className="cre2-reel-info">
-                <span className="cre2-reel-label">{reel.label}</span>
-                <p className="cre2-reel-title">{reel.title}</p>
-                <div className="cre2-reel-open">
-                  <ExternalLink size={11} />
-                  <span>{reel.openLabel ?? (reel.platform === "instagram" ? "Open Reel" : reel.platform === "youtube" ? "Watch Video" : "Watch on FB")}</span>
+                {/* Cinematic gradient background */}
+                <div className="cre2-reel-bg" aria-hidden="true" />
+
+                {/* Centered play button + pulse ring */}
+                <div className="cre2-reel-play" aria-hidden="true">
+                  <div className="cre2-reel-play-ring" />
+                  <div className="cre2-reel-play-btn">
+                    <Play size={22} fill="white" color="white" strokeWidth={0} />
+                  </div>
                 </div>
-              </div>
-            </motion.a>
-          ))}
-        </div>
+
+                {/* Info — anchored to bottom */}
+                <div className="cre2-reel-info">
+                  <span className="cre2-reel-label">{reel.label}</span>
+                  <p className="cre2-reel-title">{reel.title}</p>
+                  {reel.desc && <p className="cre2-reel-desc">{reel.desc}</p>}
+                  <div className="cre2-reel-open">
+                    <ExternalLink size={11} />
+                    <span>{reel.openLabel ?? (reel.platform === "instagram" ? "Open Reel" : reel.platform === "youtube" ? "Watch Video" : "Watch on FB")}</span>
+                  </div>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Scroll progress dots — driven by IntersectionObserver state */}
-      <div className="cre2-reel-dots" role="tablist" aria-label="Reel navigation">
-        {filteredReels.map((reel, i) => (
+      {/* Bottom Navigation: Left Arrow + Scroll Progress Dots + Right Arrow */}
+      {filteredReels.length > 0 && (
+        <div className="cre2-reel-bottom-nav">
           <button
-            key={reel.id}
-            className={`cre2-reel-dot${i === activeIdx ? " is-active" : ""}`}
-            role="tab"
-            aria-selected={i === activeIdx}
-            aria-label={`Go to reel ${i + 1}: ${reel.title}`}
-            onClick={() => goToReel(i)}
-          />
-        ))}
-      </div>
+            type="button"
+            className="cre2-reel-nav-btn"
+            onClick={() => scrollReels("left")}
+            aria-label="Previous videos"
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          <div className="cre2-reel-dots" role="tablist" aria-label="Reel navigation">
+            {filteredReels.map((reel, i) => (
+              <button
+                key={reel.id}
+                className={`cre2-reel-dot${i === activeIdx ? " is-active" : ""}`}
+                role="tab"
+                aria-selected={i === activeIdx}
+                aria-label={`Go to reel ${i + 1}: ${reel.title}`}
+                onClick={() => goToReel(i)}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="cre2-reel-nav-btn"
+            onClick={() => scrollReels("right")}
+            aria-label="Next videos"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      )}
     </motion.div>
   );
 }
