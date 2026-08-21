@@ -40,15 +40,53 @@
   <!-- Theme -->
   <meta name="theme-color" content="#0f0f0f" />
 
-  <!-- Fonts -->
+  <!-- Fonts & Resource Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Caveat:wght@600;700&family=Kalam:wght@700&family=Shadows+Into+Light&family=Indie+Flower&display=swap"
     rel="stylesheet" />
+
+  <!-- Mobile App Meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- Structured Data / JSON-LD for Google Rich Results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Muhammad Usman Shamsi",
+    "url": "https://musmanshamsi.vercel.app/",
+    "image": "https://musmanshamsi.vercel.app/images/profile_image.png",
+    "jobTitle": "AI & Full-Stack Developer",
+    "worksFor": {
+      "@type": "EducationalOrganization",
+      "name": "Sukkur IBA University"
+    },
+    "sameAs": [
+      "https://github.com/musmanshamsi",
+      "https://www.linkedin.com/in/musmanshamsi"
+    ],
+    "knowsAbout": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Deep Learning",
+      "Full-Stack Development",
+      "React",
+      "Python",
+      "TypeScript",
+      "Automation Systems"
+    ]
+  }
+  </script>
 </head>
 
 <body>
+  <a href="#detail" class="skip-to-content sr-only focus:not-sr-only">Skip to main content</a>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

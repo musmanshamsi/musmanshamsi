@@ -51,6 +51,28 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-drag: none;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Accessibility: Skip to content link */
+.skip-to-content {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000000;
+  background: var(--champagne);
+  color: #000;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+
+.skip-to-content:focus {
+  transform: translateY(0);
 }
 
 /* Allow normal text selection & focus for forms */
