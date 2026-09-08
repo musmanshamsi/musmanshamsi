@@ -3,19 +3,20 @@ import { motion } from "framer-motion";
 const journey = [
   {
     num: "01",
-    title: "Language Teacher",
-    place: "Self-employed",
-    date: "Feb 2024 – Present",
-    desc: "Strengthened communication, active listening, and interpersonal skills by working directly with language learners across diverse backgrounds.",
-    tags: ["Teaching", "Communication"],
+    title: "Frontend Developer Intern",
+    place: "CodeAlpha · Lucknow, India (Remote)",
+    href: "https://www.codealpha.tech/",
+    date: "Sept – Oct 2026",
+    desc: "Built and optimized interactive, responsive frontend web applications and components. Collaborated remotely to deliver modern UI features with clean JavaScript and React.",
+    tags: ["React.js", "JavaScript", "Frontend Dev", "Remote Internship"],
   },
   {
     num: "02",
-    title: "Script Writer Volunteer",
-    place: "Photography Club · Sukkur IBA University",
+    title: "Full-Stack AI Developer",
+    place: "ArbitrageBot · Final Year Project",
     date: "Mar 2025 – May 2026",
-    desc: "Created scripts and narrative content for promotional videos, event documentation, and storytelling campaigns for the university society.",
-    tags: ["Scriptwriting", "Storytelling", "Creative"],
+    desc: "Led full-stack development of an AI-powered crypto arbitrage platform — backend, ML pipeline, exchange integrations, and React.js interface.",
+    tags: ["Python", "React.js", "TensorFlow"],
   },
   {
     num: "03",
@@ -27,11 +28,19 @@ const journey = [
   },
   {
     num: "04",
-    title: "Full-Stack AI Developer",
-    place: "ArbitrageBot · Final Year Project",
+    title: "Script Writer Volunteer",
+    place: "Photography Club · Sukkur IBA University",
     date: "Mar 2025 – May 2026",
-    desc: "Led full-stack development of an AI-powered crypto arbitrage platform — backend, ML pipeline, exchange integrations, and React.js interface.",
-    tags: ["Python", "React.js", "TensorFlow"],
+    desc: "Created scripts and narrative content for promotional videos, event documentation, and storytelling campaigns for the university society.",
+    tags: ["Scriptwriting", "Storytelling", "Creative"],
+  },
+  {
+    num: "05",
+    title: "Language Teacher",
+    place: "Self-employed",
+    date: "Feb 2024 – Present",
+    desc: "Strengthened communication, active listening, and interpersonal skills by working directly with language learners across diverse backgrounds.",
+    tags: ["Teaching", "Communication"],
   },
 ];
 
@@ -42,6 +51,14 @@ const highlights = [
     title: "Built an AI\nTrading System",
     sub: "ArbitrageBot — cross-exchange & triangular arbitrage detection with TensorFlow and OpenAI APIs.",
     bg: "/images/project.png",
+  },
+  {
+    type: "card",
+    label: "Industry Internship",
+    title: "Frontend Developer",
+    sub: "CodeAlpha (Lucknow, India · Remote) — developed responsive web applications and interactive UI components.",
+    bg: "/images/stack.png",
+    href: "https://www.codealpha.tech/",
   },
   {
     type: "card",
@@ -56,13 +73,6 @@ const highlights = [
     title: "Script Writer",
     sub: "Produced creative scripts for the Photography Club's video campaigns and storytelling initiatives.",
     bg: "/images/creative.png",
-  },
-  {
-    type: "card",
-    label: "Education & Teaching",
-    title: "Language Teacher",
-    sub: "Taught language skills while developing empathy, communication, and audience-aware presentation.",
-    bg: "/images/education.png",
   },
 ];
 
@@ -82,8 +92,8 @@ export default function ExperienceDetail() {
         <p className="exp2-kicker">04 / Experience · Professional Activity</p>
         <h2 className="exp2-title">Experience</h2>
         <p className="exp2-intro">
-          Teaching, project exhibition, creative production, and full-stack engineering —
-          a diverse record of communication, leadership, and practical delivery.
+          Frontend engineering internship, project exhibition, and creative leadership —
+          a diverse record of technical execution, communication, and delivery.
         </p>
       </motion.div>
 
@@ -105,7 +115,20 @@ export default function ExperienceDetail() {
                 <div className="exp2-journey-content">
                   <div className="exp2-journey-meta">
                     <span className="exp2-journey-date">{item.date}</span>
-                    <span className="exp2-journey-place">{item.place}</span>
+                    <span className="exp2-journey-place">
+                      {"href" in item && item.href ? (
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="hover:underline text-[var(--champagne)] inline-flex items-center gap-1"
+                        >
+                          {item.place} ↗
+                        </a>
+                      ) : (
+                        item.place
+                      )}
+                    </span>
                   </div>
                   <h3 className="exp2-journey-role">{item.title}</h3>
                   <p className="exp2-journey-desc">{item.desc}</p>
@@ -157,7 +180,20 @@ export default function ExperienceDetail() {
                   <div className="exp2-highlight-overlay" />
                   <div className="exp2-highlight-inner">
                     <span className="exp2-highlight-label">{h.label}</span>
-                    <h3 className="exp2-highlight-card-title">{h.title}</h3>
+                    <h3 className="exp2-highlight-card-title">
+                      {"href" in h && h.href ? (
+                        <a
+                          href={h.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="hover:text-[var(--champagne)] inline-flex items-center gap-1 transition-colors"
+                        >
+                          {h.title} <span className="text-xs">↗</span>
+                        </a>
+                      ) : (
+                        h.title
+                      )}
+                    </h3>
                     <p className="exp2-highlight-card-sub">{h.sub}</p>
                   </div>
                 </motion.article>
