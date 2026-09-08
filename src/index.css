@@ -1466,16 +1466,15 @@ a:focus-visible {
     overflow: visible;
     display: block;
 
-    padding: 16px;
-    padding-bottom: 96px;
+    padding: 14px 16px 60px;
   }
 
   .atlas-stage {
     height: auto;
     min-height: auto;
     grid-template-columns: 1fr;
-    padding-top: 54px;
-    gap: 30px;
+    padding-top: 20px;
+    gap: 24px;
   }
 
 
@@ -6299,6 +6298,10 @@ a:focus-visible {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: rgba(10, 10, 10, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .desktop-nav,
@@ -6330,14 +6333,15 @@ a:focus-visible {
 
   /* ── Atlas Stage ── */
   .atlas-shell {
-    padding: 64px 16px 90px;
-    min-height: 100dvh;
+    padding: 12px 14px 48px;
+    min-height: auto;
     box-sizing: border-box;
   }
 
   .atlas-stage {
     grid-template-columns: 1fr !important;
-    gap: 16px;
+    gap: 14px;
+    padding-top: 8px !important;
     min-width: unset !important;
   }
 
@@ -6370,7 +6374,7 @@ a:focus-visible {
 
   .chip-row {
     gap: 6px;
-    margin-bottom: 80px;
+    margin-bottom: 18px;
   }
 
   .chip-row span {
