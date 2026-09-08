@@ -21,7 +21,7 @@ export const pages: Page[] = [
     subtitle: "Final-Year Computer Science Student | AI & Full-Stack Developer",
     label: "Candidate Profile",
     description:
-      "I am a final-year Computer Science student at Sukkur IBA University with experience in AI, machine learning, and full-stack development. I build practical technology solutions focused on intelligent systems, automation, and real-world problem solving.",
+      "Final-year Computer Science student at Sukkur IBA University specializing in AI, machine learning, and full-stack solutions.",
     chips: ["Python", "React.js", "Machine Learning", "Full-Stack", "OpenAI APIs"],
     cta: "Open Overview",
     visualClass: "visual-overview",

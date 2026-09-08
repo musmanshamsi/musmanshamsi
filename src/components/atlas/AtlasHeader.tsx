@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { GithubIcon, LinkedInIcon, MailIcon } from "../icons/PortfolioIcons";
 import { pages } from "../../data/portfolioPages";
 import { useSiteSettings } from "../../context/SiteSettingsContext";
@@ -12,20 +13,25 @@ export default function AtlasHeader({
   openSection,
 }: AtlasHeaderProps) {
   const { announcementBanner } = useSiteSettings();
+  const hasBanner = Boolean(announcementBanner.enabled && announcementBanner.text);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--banner-height",
+      hasBanner ? "26px" : "0px"
+    );
+  }, [hasBanner]);
 
   return (
     <>
       {/* Global Top Announcement Banner */}
-      {announcementBanner.enabled && announcementBanner.text && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-neutral-950 text-[11px] font-bold py-1 px-4 text-center tracking-wide shadow-md flex items-center justify-center gap-2">
+      {hasBanner && (
+        <div className="announcement-banner bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-neutral-950 text-[11px] font-bold py-1 px-4 text-center tracking-wide shadow-md flex items-center justify-center gap-2">
           <span>{announcementBanner.text}</span>
         </div>
       )}
 
-      <header
-        className="atlas-header"
-        style={{ top: announcementBanner.enabled && announcementBanner.text ? "28px" : "0" }}
-      >
+      <header className="atlas-header">
         <button
           className="brand"
           onClick={() => openSection(0)}

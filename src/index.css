@@ -136,10 +136,10 @@ a {
 
 .atlas-shell {
   position: relative;
-  height: calc(100dvh - 64px);
-  min-height: calc(100dvh - 64px);
+  height: calc(100vh - 50px - var(--banner-height, 0px));
+  height: calc(100dvh - 50px - var(--banner-height, 0px));
   overflow: hidden;
-  padding: 18px 24px 14px;
+  padding: 4px 24px 8px;
   isolation: isolate;
 
   display: grid;
@@ -234,14 +234,14 @@ a {
   top: 0;
   z-index: 40;
 
-  min-height: 64px;
+  min-height: 50px;
 
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 18px;
 
-  padding-inline: 24px;
+  padding: 4px 24px 6px;
 }
 
 .brand {
@@ -464,6 +464,7 @@ a {
   position: relative;
   z-index: 10;
 
+  flex: 1;
   min-height: 0;
   height: 100%;
 
@@ -474,12 +475,14 @@ a {
 
   width: min(1380px, 100%);
   margin: 0 auto;
-  padding-bottom: 28px;
+  padding-top: 8px;
+  padding-bottom: 0px;
 }
 
 .content-panel {
   max-width: 640px;
-  padding-bottom: 12px;
+  align-self: center;
+  padding-bottom: 28px;
 }
 
 .section-label {
@@ -626,9 +629,10 @@ a {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+  align-self: flex-end;
 
   transform: none;
-  padding-bottom: 8px;
+  padding-bottom: 60px;
 }
 
 .preview-stack {
@@ -642,6 +646,7 @@ a {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   align-items: flex-end;
+  margin-bottom: 0px;
 }
 
 .preview-card {
@@ -651,6 +656,7 @@ a {
   aspect-ratio: 4 / 5;
   max-height: 220px;
   height: auto;
+  margin-bottom: 0px;
 
   overflow: hidden;
 
@@ -761,8 +767,8 @@ a {
   justify-content: space-between;
 
   width: min(1380px, 100%);
-  height: 58px;
-  margin: -4px auto 0;
+  height: 48px;
+  margin: 0 auto;
 }
 
 .counter {
@@ -1260,18 +1266,22 @@ a:focus-visible {
 
 @media (max-height: 760px) and (min-width: 1081px) {
   .atlas-shell {
-    padding: 14px 22px 12px;
-    height: calc(100dvh - 56px);
-    min-height: calc(100dvh - 56px);
+    padding: 4px 22px 4px;
+    height: calc(100vh - 46px - var(--banner-height, 0px));
+    height: calc(100dvh - 46px - var(--banner-height, 0px));
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
   }
 
   .atlas-header {
-    min-height: 44px;
+    min-height: 46px;
+    padding: 3px 22px 5px;
   }
 
   .brand {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
 
   .desktop-nav {
@@ -1284,14 +1294,28 @@ a:focus-visible {
   }
 
   .header-actions a {
-    width: 39px;
-    height: 39px;
+    width: 38px;
+    height: 38px;
   }
 
   .atlas-stage {
-    padding-top: 0;
-    gap: 26px;
+    padding-top: 4px;
+    padding-bottom: 0px;
+    gap: 24px;
     grid-template-columns: minmax(0, 1fr) minmax(470px, 680px);
+    align-items: flex-end;
+  }
+
+  .content-panel {
+    align-self: center;
+    padding-bottom: 12px;
+  }
+
+  .carousel-zone {
+    align-self: flex-end;
+    align-items: flex-end;
+    padding-bottom: 52px;
+    transform: none;
   }
 
   .content-panel h1 {
@@ -1329,9 +1353,6 @@ a:focus-visible {
     font-size: 12px;
   }
 
-  .carousel-zone {
-    transform: translateY(8px);
-  }
 
   .preview-stack {
     max-width: 680px;
@@ -1390,6 +1411,7 @@ a:focus-visible {
     gap: 30px;
   }
 
+
   .carousel-zone {
     height: auto;
     justify-content: flex-start;
@@ -1405,8 +1427,15 @@ a:focus-visible {
   }
 
   .atlas-footer {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
     height: auto;
     margin-top: 20px;
+    justify-content: space-between;
+    pointer-events: auto;
   }
 
   .controls {

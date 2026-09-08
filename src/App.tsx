@@ -127,7 +127,6 @@ function MainAppContent() {
 
         {/* ── ATLAS HERO — full viewport, always visible at top ── */}
         <section className="atlas-shell" id="top">
-
           <AtlasStage
             activePage={activePage}
             activeIndex={activeIndex}
