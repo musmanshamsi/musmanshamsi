@@ -32,17 +32,32 @@ export default function AtlasHeader({
       )}
 
       <header className="atlas-header">
-        <button
-          className="brand"
-          onClick={() => openSection(0)}
-          aria-label="Go to overview"
-        >
-          <img
-            src="/images/profile_image.png"
-            alt="Muhammad Usman"
-            className="w-full h-full rounded-full object-cover"
-          />
-        </button>
+        <div className="header-brand-group">
+          <button
+            className="brand"
+            onClick={() => openSection(0)}
+            aria-label="Go to overview"
+          >
+            <img
+              src="/images/profile_image.png"
+              alt="Muhammad Usman"
+              className="w-full h-full rounded-full object-cover"
+            />
+          </button>
+
+          <a
+            href="https://www.codealpha.tech/"
+            target="_blank"
+            rel="noreferrer"
+            className="brand-status-badge"
+            title="Intern at CodeAlpha (opens CodeAlpha website)"
+          >
+            <span className="status-dot" aria-hidden="true" />
+            <span className="status-text">
+              Intern at <strong>CodeAlpha</strong>
+            </span>
+          </a>
+        </div>
 
         <nav className="desktop-nav" aria-label="Portfolio sections">
           {pages.map((page, index) => (
