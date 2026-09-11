@@ -20,6 +20,7 @@ import { SiteSettingsProvider } from "./context/SiteSettingsContext";
 import SecurityGuard from "./components/common/SecurityGuard";
 import HelloLoader from "./components/common/HelloLoader";
 import DrivePortal from "./components/common/DrivePortal";
+import { setKonamiCallback } from "./utils/konamiGlobal";
 
 function getInitialPageIndex(): number {
   const hash = window.location.hash.replace(/^#/, "").toLowerCase();
@@ -200,9 +201,14 @@ function isHelloAlreadySeen(): boolean {
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(isHelloAlreadySeen);
 
-  // ── Hidden Drive Portal state (lifted here so SecurityGuard can trigger it) ──
+  // ── Hidden Drive Portal — wired via global Konami listener (immune to StrictMode) ──
   const [isDriveOpen, setIsDriveOpen] = useState(false);
   const openDrive = useCallback(() => setIsDriveOpen(true), []);
+
+  useEffect(() => {
+    setKonamiCallback(openDrive);
+    return () => setKonamiCallback(null);
+  }, [openDrive]);
 
   // Listen for #hello hash changes to replay on demand
   useEffect(() => {
@@ -228,7 +234,7 @@ export default function App() {
   };
 
   return (
-    <SecurityGuard onKonamiCode={openDrive}>
+    <SecurityGuard>
       <SiteSettingsProvider>
         <AnimatePresence>
           {!isLoaded && (
