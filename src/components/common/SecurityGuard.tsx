@@ -57,6 +57,8 @@ export default function SecurityGuard({ children, onKonamiCode }: SecurityGuardP
       if (onKonamiCode && !ctrlOrCmd && !e.shiftKey && !e.altKey) {
         const normalizedKey = e.key.length === 1 ? e.key.toLowerCase() : e.key;
         if (KONAMI_KEY_SET.has(normalizedKey.toLowerCase())) {
+          // Stop arrow keys from scrolling the page while entering the sequence
+          e.preventDefault();
           const expected = KONAMI_SEQUENCE[konamiBufferRef.current.length];
           if (normalizedKey === expected) {
             konamiBufferRef.current = [...konamiBufferRef.current, normalizedKey];
