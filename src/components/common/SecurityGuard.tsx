@@ -1,7 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-export default function SecurityGuard({ children }: { children: React.ReactNode }) {
+// ── Konami Code (↑ ↑ ↓ ↓ ← → ← → B A) ──
+const KONAMI_SEQUENCE = [
+  "ArrowUp", "ArrowUp",
+  "ArrowDown", "ArrowDown",
+  "ArrowLeft", "ArrowRight",
+  "ArrowLeft", "ArrowRight",
+  "b", "a",
+];
+const KONAMI_KEY_SET = new Set(KONAMI_SEQUENCE.map((k) => k.toLowerCase()));
+
+interface SecurityGuardProps {
+  children: React.ReactNode;
+  onKonamiCode?: () => void;
+}
+
+export default function SecurityGuard({ children, onKonamiCode }: SecurityGuardProps) {
   const [screenshotBlurred, setScreenshotBlurred] = useState(false);
+
+  // Konami buffer — lives inside SecurityGuard so it always runs first
+  const konamiBufferRef = useRef<string[]>([]);
+  const konamiTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const isInputElement = (target: HTMLElement | null): boolean => {
@@ -33,6 +52,27 @@ export default function SecurityGuard({ children }: { children: React.ReactNode 
       const ctrlOrCmd = e.ctrlKey || e.metaKey;
       const key = e.key.toLowerCase();
       const code = e.code.toLowerCase();
+
+      // ── Konami Code detection (runs FIRST, before any blocking) ──
+      if (onKonamiCode && !ctrlOrCmd && !e.shiftKey && !e.altKey) {
+        const normalizedKey = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+        if (KONAMI_KEY_SET.has(normalizedKey.toLowerCase())) {
+          const expected = KONAMI_SEQUENCE[konamiBufferRef.current.length];
+          if (normalizedKey === expected) {
+            konamiBufferRef.current = [...konamiBufferRef.current, normalizedKey];
+            if (konamiTimerRef.current) clearTimeout(konamiTimerRef.current);
+            if (konamiBufferRef.current.length === KONAMI_SEQUENCE.length) {
+              konamiBufferRef.current = [];
+              onKonamiCode();
+            } else {
+              konamiTimerRef.current = setTimeout(() => { konamiBufferRef.current = []; }, 3000);
+            }
+          } else {
+            konamiBufferRef.current = [];
+            if (konamiTimerRef.current) clearTimeout(konamiTimerRef.current);
+          }
+        }
+      }
 
       // PrintScreen / Screenshot Key Detection
       if (

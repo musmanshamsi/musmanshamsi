@@ -20,7 +20,6 @@ import { SiteSettingsProvider } from "./context/SiteSettingsContext";
 import SecurityGuard from "./components/common/SecurityGuard";
 import HelloLoader from "./components/common/HelloLoader";
 import DrivePortal from "./components/common/DrivePortal";
-import { useKonamiCode } from "./hooks/useKonamiCode";
 
 function getInitialPageIndex(): number {
   const hash = window.location.hash.replace(/^#/, "").toLowerCase();
@@ -34,11 +33,6 @@ function getInitialPageIndex(): number {
 function MainAppContent() {
   const [activeIndex, setActiveIndex] = useState(getInitialPageIndex);
   const detailRef = useRef<HTMLElement>(null);
-
-  // ── Hidden Drive Portal (Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A) ──
-  const [isDriveOpen, setIsDriveOpen] = useState(false);
-  const openDrive = useCallback(() => setIsDriveOpen(true), []);
-  useKonamiCode(openDrive);
 
   // Synchronize URL hash when activeIndex changes
   useEffect(() => {
@@ -187,8 +181,6 @@ function MainAppContent() {
         </section>
       </main>
 
-      {/* ── HIDDEN DRIVE PORTAL — not in DOM when closed ── */}
-      <DrivePortal isOpen={isDriveOpen} onClose={() => setIsDriveOpen(false)} />
     </LayoutGroup>
   );
 }
@@ -207,6 +199,10 @@ function isHelloAlreadySeen(): boolean {
 
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(isHelloAlreadySeen);
+
+  // ── Hidden Drive Portal state (lifted here so SecurityGuard can trigger it) ──
+  const [isDriveOpen, setIsDriveOpen] = useState(false);
+  const openDrive = useCallback(() => setIsDriveOpen(true), []);
 
   // Listen for #hello hash changes to replay on demand
   useEffect(() => {
@@ -232,7 +228,7 @@ export default function App() {
   };
 
   return (
-    <SecurityGuard>
+    <SecurityGuard onKonamiCode={openDrive}>
       <SiteSettingsProvider>
         <AnimatePresence>
           {!isLoaded && (
@@ -240,6 +236,8 @@ export default function App() {
           )}
         </AnimatePresence>
         <MainAppContent />
+        {/* ── HIDDEN DRIVE PORTAL — not in DOM when closed ── */}
+        <DrivePortal isOpen={isDriveOpen} onClose={() => setIsDriveOpen(false)} />
       </SiteSettingsProvider>
     </SecurityGuard>
   );
