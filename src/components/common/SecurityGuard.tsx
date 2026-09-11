@@ -54,7 +54,10 @@ export default function SecurityGuard({ children, onKonamiCode }: SecurityGuardP
       const code = e.code.toLowerCase();
 
       // ── Konami Code detection (runs FIRST, before any blocking) ──
-      if (onKonamiCode && !ctrlOrCmd && !e.shiftKey && !e.altKey) {
+      // Guard: only run on the window listener — handleKeyDown is registered on both
+      // window AND document, so without this guard it fires twice per keypress and
+      // scrambles the sequence buffer.
+      if (onKonamiCode && !ctrlOrCmd && !e.shiftKey && !e.altKey && e.currentTarget === window) {
         const normalizedKey = e.key.length === 1 ? e.key.toLowerCase() : e.key;
         if (KONAMI_KEY_SET.has(normalizedKey.toLowerCase())) {
           // Stop arrow keys from scrolling the page while entering the sequence
