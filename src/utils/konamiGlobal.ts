@@ -33,13 +33,14 @@ window.addEventListener(
     // Ignore keys not in the Konami set — they don't affect the buffer at all
     if (!KONAMI_KEY_SET.has(key)) return;
 
-    // Stop arrow keys from scrolling the page during sequence entry
-    e.preventDefault();
-
     const expected = KONAMI_SEQUENCE[_buffer.length];
 
     if (key === expected) {
       _buffer.push(key);
+
+      // Only prevent default scroll AFTER the sequence has started (buffer not empty)
+      // This way normal arrow key scrolling works fine until you begin the sequence
+      if (_buffer.length > 0) e.preventDefault();
 
       if (_timer) clearTimeout(_timer);
 
