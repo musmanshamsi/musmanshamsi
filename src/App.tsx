@@ -1,5 +1,5 @@
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { pages } from "./data/portfolioPages";
 
@@ -19,6 +19,8 @@ import ContactDetail from "./components/sections/ContactDetail";
 import { SiteSettingsProvider } from "./context/SiteSettingsContext";
 import SecurityGuard from "./components/common/SecurityGuard";
 import HelloLoader from "./components/common/HelloLoader";
+import DrivePortal from "./components/common/DrivePortal";
+import { useKonamiCode } from "./hooks/useKonamiCode";
 
 function getInitialPageIndex(): number {
   const hash = window.location.hash.replace(/^#/, "").toLowerCase();
@@ -32,6 +34,11 @@ function getInitialPageIndex(): number {
 function MainAppContent() {
   const [activeIndex, setActiveIndex] = useState(getInitialPageIndex);
   const detailRef = useRef<HTMLElement>(null);
+
+  // ── Hidden Drive Portal (Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A) ──
+  const [isDriveOpen, setIsDriveOpen] = useState(false);
+  const openDrive = useCallback(() => setIsDriveOpen(true), []);
+  useKonamiCode(openDrive);
 
   // Synchronize URL hash when activeIndex changes
   useEffect(() => {
@@ -179,6 +186,9 @@ function MainAppContent() {
           </AnimatePresence>
         </section>
       </main>
+
+      {/* ── HIDDEN DRIVE PORTAL — not in DOM when closed ── */}
+      <DrivePortal isOpen={isDriveOpen} onClose={() => setIsDriveOpen(false)} />
     </LayoutGroup>
   );
 }

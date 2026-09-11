@@ -7625,3 +7625,135 @@ a:focus-visible {
   color: #fca5a5;
   font-size: 0.7rem;
 }
+
+/* =========================================================
+   DRIVE PORTAL — Hidden Konami Code Easter Egg
+   ↑ ↑ ↓ ↓ ← → ← → B A
+========================================================= */
+
+.drive-portal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1rem;
+}
+
+.drive-portal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 340px;
+  padding: 2.5rem 2rem 2rem;
+  background: var(--glass-strong);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 40px 100px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  text-align: center;
+}
+
+.drive-portal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.drive-portal-close:hover {
+  background: var(--glass-strong);
+  color: var(--ink);
+}
+
+.drive-portal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--line);
+  margin-bottom: 0.25rem;
+}
+
+.drive-portal-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.drive-portal-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.drive-portal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.65rem 1.6rem;
+  border-radius: 100px;
+  border: 1px solid rgba(214, 178, 111, 0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(214, 178, 111, 0.18),
+    rgba(214, 178, 111, 0.08)
+  );
+  color: var(--champagne);
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  letter-spacing: 0.01em;
+}
+
+.drive-portal-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(214, 178, 111, 0.28),
+    rgba(214, 178, 111, 0.14)
+  );
+  border-color: rgba(214, 178, 111, 0.65);
+  transform: translateY(-1px);
+}
+
+.drive-portal-btn:active {
+  transform: translateY(0);
+}
+
+.drive-portal-hint {
+  font-size: 0.72rem;
+  color: var(--faint);
+  margin: 0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
